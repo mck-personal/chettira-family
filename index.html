@@ -1,284 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chettira Family</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #f5f5f5;
-      line-height: 1.6;
-    }
-
-    header {
-      background: rgba(0,0,0,0.6);
-      padding: 2rem;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-
-    header p {
-      opacity: 0.8;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      background: rgba(0,0,0,0.4);
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #4dd0e1;
-    }
-
-    section {
-      max-width: 1100px;
-      margin: auto;
-      padding: 3rem 1.5rem;
-    }
-
-    h2 {
-      border-left: 5px solid #4dd0e1;
-      padding-left: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-      margin-bottom: 2rem;
-    }
-
-    /* Family Tree */
-    .tree {
-      overflow-x: auto;
-      padding: 1rem;
-    }
-
-    .tree ul {
-      padding-top: 20px;
-      position: relative;
-      transition: all 0.5s;
-      display: table;
-      margin: auto;
-    }
-
-    .tree li {
-      float: left;
-      text-align: center;
-      list-style-type: none;
-      position: relative;
-      padding: 20px 5px 0 5px;
-      transition: all 0.5s;
-    }
-
-    .tree li::before,
-    .tree li::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 50%;
-      border-top: 1px solid #ccc;
-      width: 50%;
-      height: 20px;
-    }
-
-    .tree li::after {
-      right: auto;
-      left: 50%;
-      border-left: 1px solid #ccc;
-    }
-
-    .tree li:only-child::after,
-    .tree li:only-child::before {
-      display: none;
-    }
-
-    .tree li:only-child {
-      padding-top: 0;
-    }
-
-    .tree li:first-child::before,
-    .tree li:last-child::after {
-      border: 0 none;
-    }
-
-    .tree li:last-child::before {
-      border-right: 1px solid #ccc;
-      border-radius: 0 5px 0 0;
-    }
-
-    .tree li:first-child::after {
-      border-radius: 5px 0 0 0;
-    }
-
-    .tree ul ul::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      border-left: 1px solid #ccc;
-      width: 0;
-      height: 20px;
-    }
-
-    .tree li div {
-      border: 1px solid #4dd0e1;
-      padding: 10px 15px;
-      display: inline-block;
-      border-radius: 8px;
-      background: rgba(0,0,0,0.6);
-      min-width: 120px;
-      font-size: 0.85rem;
-    }
-
-    footer {
-      background: rgba(0,0,0,0.7);
-      text-align: center;
-      padding: 1.5rem;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chettira Family Heritage</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
+
 <body>
 
 <header>
-  <h1>Chettira Family</h1>
-  <p>A Kodava family from Karnangeri Village, Coorg, India</p>
+  <div class="container">
+    <div class="brand">
+      <h1>Chettira Family Heritage</h1>
+    </div>
+
+    <nav aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="family-tree.html">Family Tree</a>
+      <a href="history.html">History</a>
+      <a href="festivals.html">Festivals</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="documents.html">Documents</a>
+      <a href="stories.html">Stories</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
 </header>
 
-<nav>
-  <a href="#about">About</a>
-  <a href="#history">History</a>
-  <a href="#tree">Family Tree</a>
-  <a href="#property">Property</a>
-</nav>
+<main>
 
-<section id="about">
-  <h2>About</h2>
-  <div class="card">
-    <p>This website documents the genealogy, property history, and evolution of the Chettira Family of Karnangeri Village, Kodagu district, Karnataka, India</p>
-    <p>It is maintained for heritage preservation and future generations</p>
-  </div>
-</section>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-grid">
 
-<section id="history">
-  <h2>Family History</h2>
-  <div class="card">
-    <ul>
-      <li>State-granted lands for services rendered</li>
-      <li>Oral partition among three brothers (~1920)</li>
-      <li>Major sale in 1958 (60 acres)</li>
-      <li>Maintenance division in 1976</li>
-      <li>Multiple bifurcations (1980–2018)</li>
-      <li>Final court settlement (2013)</li>
-    </ul>
-  </div>
-</section>
+      <div>
+        <h2>Welcome to Chettira Family</h2>
+        <p><strong>A Kodava family from Madikeri.</strong></p>
+        <p>
+          Discover our family history, lineage, traditions, festivals,
+          and memories preserved for future generations.
+        </p>
 
-<section id="tree">
-  <h2>Family Tree</h2>
-  <div class="card tree">
+        <div class="cta">
+          <a class="btn" href="family-tree.html">Explore Family Tree</a>
+          <a class="btn secondary" href="history.html">Read Family History</a>
+        </div>
+      </div>
 
-    <ul>
-      <li>
-        <div>Chettira Ancestors</div>
-        <ul>
-          <li>
-            <div>Sri Bopaiah</div>
-            <ul>
-              <li>
-                <div>Sri Chinnappa</div>
-                <ul>
-                  <li><div>Devaiah</div></li>
-                  <li><div>Joyappa</div></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <div>Sri Subbaiah</div>
-            <ul>
-              <li>
-                <div>Sri Naniappa</div>
-                <ul>
-                  <li><div>Kariappa</div></li>
-                  <li><div>Madappa</div></li>
-                  <li><div>Sharada</div></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <div>Sri Chengappa</div>
-            <ul>
-              <li>
-                <div>Appaji</div>
-                <ul>
-                  <li><div>Kushalappa</div></li>
-                  <li><div>Kariappa</div></li>
-                  <li><div>Somaiah</div></li>
-                </ul>
-              </li>
-              <li>
-                <div>Devaiah</div>
-                <ul>
-                  <li><div>Sujatha</div></li>
-                  <li><div>Kalaiah</div></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
+      <div class="card">
+        <h3 style="margin-top:0">Explore</h3>
+        <p class="kicker">Key sections of the family archive</p>
+        <ul class="list">
+          <li><a href="family-tree.html">Family Members & Lineage</a></li>
+          <li><a href="festivals.html">Festivals & Traditions</a></li>
+          <li><a href="gallery.html">Photo Memories</a></li>
+          <li><a href="documents.html">Documents & Records</a></li>
         </ul>
-      </li>
-    </ul>
+      </div>
 
-  </div>
-</section>
+    </div>
+  </section>
 
-<section id="property">
-  <h2>Property Records</h2>
-  <div class="card">
-    <p><strong>Original Surveys:</strong></p>
-    <ul>
-      <li>4/1 – 0.62 acres</li>
-      <li>4/2 – 121.70 acres</li>
-      <li>5 – 8.43 acres</li>
-    </ul>
+  <!-- About Snapshot -->
+  <section class="section">
+    <div class="container">
+      <div class="grid">
 
-    <p><strong>Current Surveys:</strong></p>
-    <p>4/4, 4/7, 4/9, 4/10, 4/11, 4/12, 4/13</p>
-  </div>
-</section>
+        <div class="col-6 card">
+          <h3>About the Family</h3>
+          <p class="kicker">An overview</p>
+
+          <p>
+            The Chettira Family is a respected Kodava family originating
+            from Karnangeri village in Madikeri Taluk, Kodagu District,
+            Karnataka. For generations, the family has been closely
+            associated with agriculture, land stewardship, and
+            community service.
+          </p>
+
+          <a class="btn secondary" href="history.html">
+            Read more →
+          </a>
+        </div>
+
+        <!-- Highlights -->
+        <div class="col-6 card">
+          <h3>Family Values</h3>
+          <p class="kicker">What binds us together</p>
+
+          <ul class="list">
+            <li>Respect for elders and ancestry</li>
+            <li>Strong ties to land and traditions</li>
+            <li>Unity across family branches</li>
+            <li>Adaptation through education and modern professions</li>
+          </ul>
+        </div>
+
+        <!-- Photo Placeholder -->
+        <div class="col-12">
+          <h3>Memories</h3>
+          <p class="kicker">
+            Photographs and moments from past generations
+          </p>
+
+          <div class="gallery">
+            <div class="ph">Old Photograph</div>
+            <div class="ph">Family Gathering</div>
+            <div class="ph">Ancestral Home</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <footer>
-  <p>© Chettira Family Archives | For Private Reference Only</p>
+  <div class="container">
+    <small>
+      © Chettira Family • Preserving heritage for future generations
+    </small>
+  </div>
 </footer>
 
 </body>
