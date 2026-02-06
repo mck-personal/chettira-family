@@ -9,6 +9,8 @@
     "ROOT":         "#2563eb"
   };
 
+  const SPOUSE_RE = /^(wife|husband)\s*:/i;
+
   function getBranchName(d) {
     if (!d) return "ROOT";
     if (d.depth === 0) return "ROOT";
@@ -22,27 +24,55 @@
     return BRANCH_COLORS[b] || BRANCH_COLORS["ROOT"];
   }
 
-  function extractSpouseChildren(d) {
-    const rawChildren = (d.children || d._children || []).map(c => c.data?.name || "");
-    const spouseNodes = rawChildren.filter(n => /^(wife|husband)\s*:/i.test(n));
-    const spouse = spouseNodes.map(s => s.replace(/^(wife|husband)\s*:\s*/i, ""));
-    const children = rawChildren.filter(n => !/^(wife|husband)\s*:/i.test(n));
-    return { spouse, children };
+  /**
+   * Preprocess tree data to:
+   * 1) Remove spouse nodes from visual hierarchy
+   * 2) Store spouses on the person node: data.spouses[]
+   * 3) Promote spouse-node children as direct children of person
+   *
+   * This keeps spouses visible ONLY in the details card, not as nodes.
+   */
+  function preprocess(node) {
+    const out = { ...node };
+    out.spouses = Array.isArray(out.spouses) ? out.spouses.slice() : [];
+    const children = Array.isArray(node.children) ? node.children : [];
+
+    const normalChildren = [];
+    for (const ch of children) {
+      const name = (ch?.name || "").trim();
+      if (SPOUSE_RE.test(name)) {
+        // Store spouse label (without prefix)
+        const spouseName = name.replace(SPOUSE_RE, "").trim();
+        if (spouseName) out.spouses.push(spouseName);
+
+        // Promote spouse node's children into normal children
+        const spouseKids = Array.isArray(ch.children) ? ch.children : [];
+        for (const kid of spouseKids) normalChildren.push(kid);
+      } else {
+        normalChildren.push(ch);
+      }
+    }
+
+    // Recurse
+    out.children = normalChildren.map(preprocess);
+    return out;
   }
 
   function setDetails(d) {
     const panel = $("details");
+
     if (!d) {
       panel.innerHTML = `
         <h3>Node Details</h3>
-        <p class="meta">Select a person’s name in the tree to view spouse/children and notes.</p>
+        <p class="meta">Select a person’s name in the tree to view spouses/children and notes.</p>
         <p class="kicker">Tip: Add photos via <code>assets/images/people/</code> + JSON field <code>"photo"</code>.</p>
       `;
       return;
     }
 
     const branch = getBranchName(d);
-    const { spouse, children } = extractSpouseChildren(d);
+    const spouses = Array.isArray(d.data?.spouses) ? d.data.spouses : [];
+    const children = (d.children || d._children || []).map(c => c.data?.name || "").filter(Boolean);
     const notes = d.data?.notes || "";
     const photo = d.data?.photo || "";
 
@@ -53,15 +83,17 @@
         ${photo ? `<span class="pill">Photo</span>` : ``}
       </div>
 
-      ${spouse.length ? `
-        <strong>Spouse</strong>
-        <ul>${spouse.map(s => `<li>${s}</li>`).join("")}</ul>
-      ` : `<p class="kicker">Spouse: (not recorded here)</p>`}
+      ${
+        spouses.length
+          ? `<strong>Spouse</strong><ul>${spouses.map(s => `<li>${s}</li>`).join("")}</ul>`
+          : `<p class="kicker">Spouse: (not recorded here)</p>`
+      }
 
-      ${children.length ? `
-        <strong>Children</strong>
-        <ul>${children.map(c => `<li>${c}</li>`).join("")}</ul>
-      ` : `<p class="kicker">Children: (none listed / not recorded)</p>`}
+      ${
+        children.length
+          ? `<strong>Children</strong><ul>${children.map(c => `<li>${c}</li>`).join("")}</ul>`
+          : `<p class="kicker">Children: (none listed / not recorded)</p>`
+      }
 
       ${notes ? `<hr /><strong>Notes</strong><p>${notes}</p>` : ``}
     `;
@@ -85,7 +117,6 @@
   }
 
   function collapseToDepth(node, depth) {
-    // depth means: keep nodes expanded up to < depth
     if (!node) return;
     if (depth === 999) {
       expandAll(node);
@@ -95,7 +126,6 @@
       collapseAll(node);
       return;
     }
-    // ensure expanded then recurse
     if (node._children) {
       node.children = node._children;
       node._children = null;
@@ -104,7 +134,6 @@
   }
 
   function expandToNode(d) {
-    // expand ancestors so node is visible
     let cur = d;
     while (cur) {
       if (cur._children) {
@@ -115,8 +144,9 @@
     }
   }
 
-  // ---------- Load data ----------
-  const data = await fetch("assets/data/family-tree.json").then(r => r.json());
+  // ---------- Load + preprocess data ----------
+  const raw = await fetch("assets/data/family-tree.json").then(r => r.json());
+  const data = preprocess(raw); // spouses removed from nodes, kept in data.spouses[]
   const root = d3.hierarchy(data);
 
   // ---------- SVG Setup ----------
@@ -134,7 +164,7 @@
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
-    .style("font", '13px Aptos, Segoe UI, system-ui, sans-serif')
+    .style("font", "13px Aptos, Segoe UI, system-ui, sans-serif")
     .style("user-select", "none");
 
   const defs = svg.append("defs");
@@ -150,7 +180,7 @@
   let i = 0;
   root.each(d => { d.id = ++i; });
 
-  // Default: collapse to depth 2 (recommended)
+  // Default: collapse to depth 2
   collapseToDepth(root, 2);
 
   // Current selection/search state
@@ -161,7 +191,6 @@
 
   // ---------- Render ----------
   function buildPhotoPatterns(nodes) {
-    // Clear existing patterns
     defs.selectAll("*").remove();
 
     nodes.forEach(d => {
@@ -181,6 +210,15 @@
           .attr("y", 0);
       }
     });
+  }
+
+  function isMatch(d, q) {
+    if (!q) return false;
+    const name = (d.data.name || "").toLowerCase();
+    const spouses = (Array.isArray(d.data.spouses) ? d.data.spouses : [])
+      .join(" ")
+      .toLowerCase();
+    return name.includes(q) || spouses.includes(q);
   }
 
   function update(source) {
@@ -243,7 +281,6 @@
       .style("cursor", "pointer")
       .on("click", (event, d) => {
         event.stopPropagation();
-        // toggle expand/collapse
         if (d.children) {
           d._children = d.children;
           d.children = null;
@@ -254,7 +291,7 @@
         update(d);
       });
 
-    // Name text: show details on click (node cards)
+    // Name text: show details on click
     nodeEnter.append("text")
       .attr("dy", "0.32em")
       .attr("x", d => (d._children ? -14 : 14))
@@ -269,25 +306,19 @@
         update(d);
       });
 
-    // Tooltip
     nodeEnter.append("title").text(d => d.data.name);
 
-    // Merge + position
     const nodeMerge = nodeEnter.merge(node);
 
     nodeMerge
       .classed("selected", d => d.id === selectedId)
-      .classed("match", d => {
-        if (!currentQuery) return false;
-        return (d.data.name || "").toLowerCase().includes(currentQuery);
-      });
+      .classed("match", d => isMatch(d, currentQuery));
 
     nodeMerge.transition().duration(250)
       .attr("transform", d => `translate(${d.y},${d.x})`);
 
     node.exit().remove();
 
-    // Save old positions for transitions
     nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
   }
 
@@ -297,18 +328,16 @@
   function findMatches(query) {
     const q = (query || "").trim().toLowerCase();
     if (!q) return [];
-    return root.descendants().filter(d => (d.data.name || "").toLowerCase().includes(q));
+    return root.descendants().filter(d => isMatch(d, q));
   }
 
   function centerOnNode(d) {
     const w = width();
     const h = height();
-    const scale = 1.0; // keep consistent; can adjust if you prefer auto-zoom
-    const x = d.x;
-    const y = d.y;
+    const scale = 1.0;
 
     const transform = d3.zoomIdentity
-      .translate(w / 2 - y * scale, h / 2 - x * scale)
+      .translate(w / 2 - d.y * scale, h / 2 - d.x * scale)
       .scale(scale);
 
     svg.transition().duration(350).call(zoomBehavior.transform, transform);
@@ -328,11 +357,9 @@
       return;
     }
 
-    // Expand ancestors of first match so it becomes visible
     const first = matches[0];
     expandToNode(first);
 
-    // Select the first match and center on it
     selectedId = first.id;
     setDetails(first);
 
@@ -340,7 +367,7 @@
     centerOnNode(first);
   }
 
-  // ---------- Toggle controls ----------
+  // ---------- UI Wiring ----------
   $("searchBtn").addEventListener("click", (e) => { e.preventDefault(); runSearch(); });
   $("searchInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); runSearch(); }
@@ -352,7 +379,6 @@
     currentQuery = "";
     selectedId = null;
     setDetails(null);
-    // collapse back to selected depth
     const depth = parseInt($("depthSelect").value, 10);
     collapseToDepth(root, depth);
     update(root);
@@ -377,7 +403,6 @@
     update(root);
   });
 
-  // Background click clears selection
   svg.on("click", () => {
     selectedId = null;
     setDetails(null);
