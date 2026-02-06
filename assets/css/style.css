@@ -191,6 +191,40 @@ main{
   box-shadow: 0 10px 20px rgba(15, 23, 42, 0.10);
 }
 
+/* Contact form styles */
+.contact-grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+}
+.contact-info{ grid-column: span 5; }
+.contact-form{ grid-column: span 7; }
+
+@media (max-width: 900px){
+  .contact-info, .contact-form{ grid-column: span 12; }
+}
+
+label{
+  display:block;
+  font-weight:600;
+  color: var(--muted);
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+input[type="text"], input[type="email"], textarea{
+  width:100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.contact-form .btn{ padding: 10px 14px; }
+
 /* Cards / Grid */
 .card{
   background: var(--surface);

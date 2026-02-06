@@ -31,27 +31,41 @@
 <main>
   <section class="section">
     <div class="container">
-      <div class="card">
-        <h2 style="margin-top:0">Contact / Contribute</h2>
-        <p class="kicker">Help us keep the family archive accurate and complete.</p>
+      <div class="card contact-grid">
+        <div class="col-6 contact-info">
+          <h2 style="margin-top:0">Contact</h2>
+          <p class="kicker">Get in touch or contribute materials to the family archive.</p>
 
-        <p>
-          If you would like to contribute corrections, photographs, documents, or stories,
-          please share them with the site maintainer.
-        </p>
+          <p>
+            For contributions, corrections, or permissions, contact the site maintainer:
+          </p>
 
-        <hr />
+          <ul class="list">
+            <li><strong>Contact Person:</strong> Chettira Shari Mandanna</li>
+            <li><strong>Email:</strong> <a href="mailto:shari4maddy@gmail.com">shari4maddy@gmail.com</a></li>
+          </ul>
+        </div>
 
-        <h3>Contribution Options</h3>
-        <ul class="list">
-          <li>Share updates via email or messaging</li>
-          <li>Send photos/documents to be added to the Gallery / Documents sections</li>
-          <li>Suggest corrections to lineage or festival notes</li>
-        </ul>
+        <div class="col-6 contact-form">
+          <h3>Send a message</h3>
+          <form action="#" method="post" id="contact-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
 
-        <p class="kicker">
-          If you want, we can embed a free Google Form here for structured submissions.
-        </p>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+
+            <div class="cta">
+              <button type="submit" class="btn primary">Send Message</button>
+              <button type="reset" class="btn secondary">Reset</button>
+            </div>
+
+            <p class="kicker" style="margin-top:12px">Note: This form is client-side only. To attach photos or documents, please email us directly.</p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
