@@ -8,7 +8,16 @@
     "ROOT":         "#2563eb"
   };
 
+  // Spouse detection in your JSON
   const SPOUSE_RE = /^(wife|husband)\s*:/i;
+
+  // Default avatar image (optional). If this file doesn't exist, we'll fallback to initials.
+  const DEFAULT_AVATAR = "assets/images/people/default.png";
+
+  // Avatar sizing
+  const R_PERSON = 18;  // main node avatar radius
+  const R_SPOUSE = 16;  // spouse node avatar radius
+  const RING = 3;       // white ring thickness
 
   function isSpouseNodeName(name) {
     return SPOUSE_RE.test((name || "").trim());
@@ -44,6 +53,19 @@
     const n = d.data?.name || "";
     if (isSpouseNodeName(n)) return spousePersonName(n);
     return n;
+  }
+
+  function initialsFor(name) {
+    const clean = (displayLabel({ data: { name } }) || "").replace(/[()]/g, "").trim();
+    if (!clean) return "?";
+    const parts = clean.split(/[ /]+/).filter(Boolean);
+    const first = parts[0]?.[0] || "?";
+    const last = (parts.length > 1 ? parts[parts.length - 1][0] : "") || "";
+    return (first + last).toUpperCase();
+  }
+
+  function radiusFor(d) {
+    return isSpouseNodeName(d.data?.name || "") ? R_SPOUSE : R_PERSON;
   }
 
   function setDetails(d) {
@@ -147,18 +169,9 @@
 
   function collapseToDepth(node, depth) {
     if (!node) return;
-    if (depth === 999) {
-      expandAll(node);
-      return;
-    }
-    if (node.depth >= depth) {
-      collapseAll(node);
-      return;
-    }
-    if (node._children) {
-      node.children = node._children;
-      node._children = null;
-    }
+    if (depth === 999) { expandAll(node); return; }
+    if (node.depth >= depth) { collapseAll(node); return; }
+    if (node._children) { node.children = node._children; node._children = null; }
     if (node.children) node.children.forEach(child => collapseToDepth(child, depth));
   }
 
@@ -180,10 +193,9 @@
   // SVG setup
   const treeContainer = $("tree");
   const width = () => treeContainer.clientWidth || 1200;
-  const height = () => treeContainer.clientHeight || 700;
 
-  const dx = 20;
-  const dy = 220;
+  const dx = 26;
+  const dy = 240;
 
   const tree = d3.tree().nodeSize([dx, dy]);
   const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
@@ -198,14 +210,29 @@
   const defs = svg.append("defs");
   const g = svg.append("g");
 
+  // Subtle drop shadow filter for avatar ring
+  defs.append("filter")
+    .attr("id", "avatarShadow")
+    .attr("x", "-30%").attr("y", "-30%")
+    .attr("width", "160%").attr("height", "160%")
+    .append("feDropShadow")
+    .attr("dx", 0)
+    .attr("dy", 2)
+    .attr("stdDeviation", 2.5)
+    .attr("flood-color", "#0f172a")
+    .attr("flood-opacity", 0.18);
+
+  // Zoom/Pan
   const zoomBehavior = d3.zoom()
     .scaleExtent([0.35, 2.8])
     .on("zoom", (event) => g.attr("transform", event.transform));
   svg.call(zoomBehavior);
 
+  // IDs
   let i = 0;
   root.each(d => { d.id = ++i; });
 
+  // default collapse depth
   collapseToDepth(root, 2);
 
   let selectedId = null;
@@ -213,27 +240,29 @@
 
   setDetails(null);
 
-  // ✅ Robust photo patterns (fix)
-  function buildPhotoPatterns(nodes) {
-    defs.selectAll("*").remove();
+  // Build clipPaths for photo avatars
+  function ensureClipPaths(nodes) {
+    const clips = defs.selectAll("clipPath.avatar-clip")
+      .data(nodes, d => d.id);
 
-    nodes.forEach(d => {
-      if (d.data && d.data.photo) {
-        const pid = `p-${d.id}`;
+    clips.enter()
+      .append("clipPath")
+      .attr("class", "avatar-clip")
+      .attr("id", d => `clip-${d.id}`)
+      .append("circle")
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", d => radiusFor(d));
 
-        // Use userSpaceOnUse for consistent sizing
-        defs.append("pattern")
-          .attr("id", pid)
-          .attr("patternUnits", "userSpaceOnUse")
-          .attr("width", 40)
-          .attr("height", 40)
-          .append("image")
-          .attr("href", d.data.photo)
-          .attr("width", 40)
-          .attr("height", 40)
-          .attr("preserveAspectRatio", "xMidYMid slice");
-      }
-    });
+    clips.select("circle").attr("r", d => radiusFor(d));
+    clips.exit().remove();
+  }
+
+  function photoUrl(d) {
+    // If explicit photo exists, use it.
+    if (d.data?.photo) return d.data.photo;
+    // Otherwise try default avatar image (optional).
+    return DEFAULT_AVATAR;
   }
 
   function isMatch(d, q) {
@@ -250,13 +279,8 @@
   }
 
   function toggleNode(d) {
-    if (d.children) {
-      d._children = d.children;
-      d.children = null;
-    } else if (d._children) {
-      d.children = d._children;
-      d._children = null;
-    }
+    if (d.children) { d._children = d.children; d.children = null; }
+    else if (d._children) { d.children = d._children; d._children = null; }
   }
 
   function update(source) {
@@ -265,8 +289,10 @@
     const nodes = root.descendants();
     const links = root.links();
 
-    buildPhotoPatterns(nodes);
+    // Clip paths for ALL nodes (so avatars always stay inside circles)
+    ensureClipPaths(nodes);
 
+    // viewBox bounds
     let left = root, right = root;
     root.eachBefore(n => {
       if (n.x < left.x) left = n;
@@ -274,9 +300,10 @@
     });
 
     const vbW = Math.max(width(), 1100);
-    const vbH = (right.x - left.x) + 180;
-    svg.attr("viewBox", [-80, left.x - 80, vbW, vbH]);
+    const vbH = (right.x - left.x) + 220;
+    svg.attr("viewBox", [-100, left.x - 110, vbW, vbH]);
 
+    // Links
     const link = g.selectAll("path.link").data(links, d => d.target.id);
 
     link.enter()
@@ -295,6 +322,7 @@
 
     link.exit().remove();
 
+    // Nodes
     const node = g.selectAll("g.node").data(nodes, d => d.id);
 
     const nodeEnter = node.enter()
@@ -302,13 +330,11 @@
       .attr("class", "node")
       .attr("transform", d => `translate(${source.y0 ?? 0},${source.x0 ?? 0})`);
 
+    // Avatar background circle (fallback color)
     nodeEnter.append("circle")
-      .attr("r", d => isSpouseNodeName(d.data?.name || "") ? 7 : 8)
-      .attr("fill", d => {
-        if (d.data?.photo) return `url(#p-${d.id})`;
-        const c = getBranchColor(d);
-        return isSpouseNodeName(d.data?.name || "") ? "#ffffff" : c;
-      })
+      .attr("class", "avatar-bg")
+      .attr("r", d => radiusFor(d))
+      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#ffffff" : getBranchColor(d))
       .attr("stroke", d => getBranchColor(d))
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
@@ -319,9 +345,57 @@
         update(d);
       });
 
+    // Avatar image (clipped inside circle)
+    nodeEnter.append("image")
+      .attr("class", "avatar-img")
+      .attr("href", d => photoUrl(d))
+      .attr("x", d => -radiusFor(d))
+      .attr("y", d => -radiusFor(d))
+      .attr("width", d => radiusFor(d) * 2)
+      .attr("height", d => radiusFor(d) * 2)
+      .attr("preserveAspectRatio", "xMidYMid slice")
+      .attr("clip-path", d => `url(#clip-${d.id})`)
+      .style("cursor", "pointer")
+      .on("click", (event, d) => {
+        event.stopPropagation();
+        selectNode(d);
+        toggleNode(d);
+        update(d);
+      })
+      // If the default avatar image doesn't exist, keep the background + show initials instead
+      .on("error", function () {
+        d3.select(this).attr("href", null);
+      });
+
+    // Initials fallback (visible if no photo or photo fails)
     nodeEnter.append("text")
+      .attr("class", "avatar-initials")
+      .attr("text-anchor", "middle")
+      .attr("dy", "0.35em")
+      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#0f172a" : "#ffffff")
+      .style("font-weight", 800)
+      .style("font-size", d => (radiusFor(d) <= 16 ? "10px" : "11px"))
+      .text(d => {
+        // show initials only when there is no explicit photo
+        return d.data?.photo ? "" : initialsFor(d.data?.name || "");
+      })
+      .style("pointer-events", "none");
+
+    // White ring (like avatar border) + subtle shadow
+    nodeEnter.append("circle")
+      .attr("class", "avatar-ring")
+      .attr("r", d => radiusFor(d))
+      .attr("fill", "none")
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", RING)
+      .style("filter", "url(#avatarShadow)")
+      .style("pointer-events", "none");
+
+    // Name label (to the right/left depending on collapsed)
+    nodeEnter.append("text")
+      .attr("class", "node-label")
       .attr("dy", "0.32em")
-      .attr("x", d => (d._children ? -14 : 14))
+      .attr("x", d => (d._children ? -(radiusFor(d) + 12) : (radiusFor(d) + 12)))
       .attr("text-anchor", d => (d._children ? "end" : "start"))
       .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#334155" : "#0f172a")
       .style("cursor", "pointer")
@@ -332,13 +406,14 @@
         update(d);
       });
 
+    // Small role label below spouse node
     nodeEnter.filter(d => isSpouseNodeName(d.data?.name || ""))
       .append("text")
-      .attr("dy", "1.35em")
-      .attr("x", d => (d._children ? -14 : 14))
+      .attr("dy", "1.6em")
+      .attr("x", d => (d._children ? -(radiusFor(d) + 12) : (radiusFor(d) + 12)))
       .attr("text-anchor", d => (d._children ? "end" : "start"))
       .attr("fill", "#64748b")
-      .style("font-weight", 600)
+      .style("font-weight", 700)
       .style("font-size", "11px")
       .text(d => spouseRole(d.data.name));
 
@@ -368,8 +443,8 @@
   }
 
   function centerOnNode(d) {
-    const w = width();
-    const h = height();
+    const w = treeContainer.clientWidth || 1200;
+    const h = treeContainer.clientHeight || 700;
     const scale = 1.0;
     const transform = d3.zoomIdentity
       .translate(w / 2 - d.y * scale, h / 2 - d.x * scale)
@@ -379,17 +454,10 @@
 
   function runSearch() {
     currentQuery = ($("searchInput").value || "").trim().toLowerCase();
-    if (!currentQuery) {
-      update(root);
-      return;
-    }
+    if (!currentQuery) { update(root); return; }
 
     const matches = findMatches(currentQuery);
-    if (!matches.length) {
-      setDetails(null);
-      update(root);
-      return;
-    }
+    if (!matches.length) { setDetails(null); update(root); return; }
 
     const first = matches[0];
     expandToNode(first);
