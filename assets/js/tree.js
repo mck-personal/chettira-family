@@ -40,6 +40,12 @@
     return BRANCH_COLORS[b] || BRANCH_COLORS["ROOT"];
   }
 
+  function displayLabel(d) {
+    const n = d.data?.name || "";
+    if (isSpouseNodeName(n)) return spousePersonName(n);
+    return n;
+  }
+
   function setDetails(d) {
     const panel = $("details");
 
@@ -57,12 +63,10 @@
     const photo = d.data?.photo || "";
     const kids = nodeKids(d);
 
-    // If this is a spouse node, show who it's attached to and its children
     if (isSpouseNodeName(name)) {
       const role = spouseRole(name);
       const spouseName = spousePersonName(name);
       const partner = d.parent?.data?.name ? d.parent.data.name : "(unknown)";
-
       const spouseChildren = kids.map(c => c.data?.name).filter(Boolean);
 
       panel.innerHTML = `
@@ -84,13 +88,9 @@
       return;
     }
 
-    // For a normal person node: spouse nodes are among children
     const spouseNodes = kids.filter(c => isSpouseNodeName(c.data?.name || ""));
     const spouses = spouseNodes.map(s => spousePersonName(s.data.name));
 
-    // Children can be:
-    // - direct children nodes (non spouse)
-    // - children under spouse nodes
     const childrenSet = [];
     for (const c of kids) {
       const cname = c.data?.name || "";
@@ -128,7 +128,7 @@
     `;
   }
 
-  // Collapse / expand helpers
+  // Collapse/expand helpers
   function collapseAll(node) {
     if (node.children) {
       node._children = node.children;
@@ -173,11 +173,11 @@
     }
   }
 
-  // ---------- Load data ----------
+  // Load data
   const data = await fetch("assets/data/family-tree.json").then(r => r.json());
   const root = d3.hierarchy(data);
 
-  // ---------- SVG setup ----------
+  // SVG setup
   const treeContainer = $("tree");
   const width = () => treeContainer.clientWidth || 1200;
   const height = () => treeContainer.clientHeight || 700;
@@ -198,17 +198,14 @@
   const defs = svg.append("defs");
   const g = svg.append("g");
 
-  // Zoom/Pan
   const zoomBehavior = d3.zoom()
     .scaleExtent([0.35, 2.8])
     .on("zoom", (event) => g.attr("transform", event.transform));
   svg.call(zoomBehavior);
 
-  // IDs
   let i = 0;
   root.each(d => { d.id = ++i; });
 
-  // default collapse depth
   collapseToDepth(root, 2);
 
   let selectedId = null;
@@ -216,32 +213,27 @@
 
   setDetails(null);
 
+  // ✅ Robust photo patterns (fix)
   function buildPhotoPatterns(nodes) {
     defs.selectAll("*").remove();
+
     nodes.forEach(d => {
       if (d.data && d.data.photo) {
         const pid = `p-${d.id}`;
+
+        // Use userSpaceOnUse for consistent sizing
         defs.append("pattern")
           .attr("id", pid)
-          .attr("patternUnits", "objectBoundingBox")
-          .attr("width", 1)
-          .attr("height", 1)
+          .attr("patternUnits", "userSpaceOnUse")
+          .attr("width", 40)
+          .attr("height", 40)
           .append("image")
           .attr("href", d.data.photo)
-          .attr("preserveAspectRatio", "xMidYMid slice")
           .attr("width", 40)
-          .attr("height", 40);
+          .attr("height", 40)
+          .attr("preserveAspectRatio", "xMidYMid slice");
       }
     });
-  }
-
-  function displayLabel(d) {
-    const n = d.data?.name || "";
-    if (isSpouseNodeName(n)) {
-      // show spouse name without "Wife:"/"Husband:" prefix to keep tree tidy
-      return spousePersonName(n);
-    }
-    return n;
   }
 
   function isMatch(d, q) {
@@ -275,7 +267,6 @@
 
     buildPhotoPatterns(nodes);
 
-    // viewBox bounds
     let left = root, right = root;
     root.eachBefore(n => {
       if (n.x < left.x) left = n;
@@ -286,7 +277,6 @@
     const vbH = (right.x - left.x) + 180;
     svg.attr("viewBox", [-80, left.x - 80, vbW, vbH]);
 
-    // Links
     const link = g.selectAll("path.link").data(links, d => d.target.id);
 
     link.enter()
@@ -305,7 +295,6 @@
 
     link.exit().remove();
 
-    // Nodes
     const node = g.selectAll("g.node").data(nodes, d => d.id);
 
     const nodeEnter = node.enter()
@@ -313,11 +302,9 @@
       .attr("class", "node")
       .attr("transform", d => `translate(${source.y0 ?? 0},${source.x0 ?? 0})`);
 
-    // Circle: now does BOTH (open details + toggle expand/collapse)
     nodeEnter.append("circle")
       .attr("r", d => isSpouseNodeName(d.data?.name || "") ? 7 : 8)
       .attr("fill", d => {
-        // spouse nodes get a lighter fill
         if (d.data?.photo) return `url(#p-${d.id})`;
         const c = getBranchColor(d);
         return isSpouseNodeName(d.data?.name || "") ? "#ffffff" : c;
@@ -332,7 +319,6 @@
         update(d);
       });
 
-    // Name: open details (no toggle)
     nodeEnter.append("text")
       .attr("dy", "0.32em")
       .attr("x", d => (d._children ? -14 : 14))
@@ -346,7 +332,6 @@
         update(d);
       });
 
-    // small prefix label for spouse nodes: Wife/Husband (muted)
     nodeEnter.filter(d => isSpouseNodeName(d.data?.name || ""))
       .append("text")
       .attr("dy", "1.35em")
@@ -375,7 +360,7 @@
 
   update(root);
 
-  // ---------- Search ----------
+  // Search
   function findMatches(query) {
     const q = (query || "").trim().toLowerCase();
     if (!q) return [];
@@ -416,7 +401,7 @@
     centerOnNode(first);
   }
 
-  // ---------- UI Wiring ----------
+  // UI wiring
   $("searchBtn").addEventListener("click", (e) => { e.preventDefault(); runSearch(); });
   $("searchInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); runSearch(); }
@@ -452,7 +437,6 @@
     update(root);
   });
 
-  // click background clears selection
   svg.on("click", () => {
     selectedId = null;
     setDetails(null);
