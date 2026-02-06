@@ -1,38 +1,48 @@
 (async function () {
   const $ = (id) => document.getElementById(id);
 
+  // -----------------------------
+  // Config
+  // -----------------------------
   const BRANCH_COLORS = {
-    "Sri Bopaiah":  "#1d4ed8",
+    "Sri Bopaiah": "#1d4ed8",
     "Sri Subbaiah": "#0ea5e9",
-    "Sri Chengappa":"#6366f1",
-    "ROOT":         "#2563eb"
+    "Sri Chengappa": "#6366f1",
+    "ROOT": "#2563eb"
   };
 
-  // Spouse detection in your JSON
+  // Spouse detection in your JSON format
   const SPOUSE_RE = /^(wife|husband)\s*:/i;
 
-// Default avatar image (optional). If this file doesn't exist, initials will show.
-const DEFAULT_AVATAR = "assets/images/people/default.png";
+  // Default avatar image for everyone (put this file in repo)
+  const DEFAULT_AVATAR = "assets/images/people/default.png";
 
-// Avatar sizing (BIGGER)
-const R_PERSON = 62;  // base person radius
-const R_SPOUSE = 58;  // base spouse radius
-const RING = 4;       // white ring thickness
+  // Avatar sizing (BIGGER)
+  const R_PERSON = 26;  // base person radius
+  const R_SPOUSE = 22;  // base spouse radius
+  const RING = 4;       // white ring thickness
 
-// Root/top ancestors slightly larger
-const ROOT_BOOST = 8;     // root node size boost
-const TOP_BOOST = 5;      // depth-1 boost (Sri Bopaiah/Subbaiah/Chengappa)
-const SPOUSE_BOOST = 2;   // spouse boost so spouse avatars don't feel too small
+  // Root/top ancestors slightly larger
+  const ROOT_BOOST = 8;      // depth 0 boost
+  const TOP_BOOST = 5;       // depth 1 boost (branch ancestors)
+  const SPOUSE_BOOST = 2;    // spouse slight boost
 
-// Hover animation
-const HOVER_DELTA = 4;      // how much avatar grows on hover
-const HOVER_MS = 120;       // hover transition duration (ms)
+  // Hover animation
+  const HOVER_DELTA = 4;     // how much avatar grows on hover
+  const HOVER_MS = 120;      // hover transition duration (ms)
 
-// Font sizes
-const NAME_FONT_MAIN = 15;  // names (default)
-const NAME_FONT_TOP = 16;   // root/top branch names
-const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
+  // Font sizes
+  const NAME_FONT_MAIN = 15; // normal names
+  const NAME_FONT_TOP = 16;  // root/top names
+  const ROLE_FONT = 12;      // Wife/Husband label font
 
+  // Tree spacing (adjusted for bigger avatars)
+  const DX = 36;   // vertical spacing between rows
+  const DY = 300;  // horizontal spacing between generations
+
+  // -----------------------------
+  // Helpers
+  // -----------------------------
   function isSpouseNodeName(name) {
     return SPOUSE_RE.test((name || "").trim());
   }
@@ -65,12 +75,11 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
 
   function displayLabel(d) {
     const n = d.data?.name || "";
-    if (isSpouseNodeName(n)) return spousePersonName(n);
-    return n;
+    return isSpouseNodeName(n) ? spousePersonName(n) : n;
   }
 
   function initialsFor(name) {
-    const clean = (displayLabel({ data: { name } }) || "").replace(/[()]/g, "").trim();
+    const clean = (name || "").replace(/[()]/g, "").trim();
     if (!clean) return "?";
     const parts = clean.split(/[ /]+/).filter(Boolean);
     const first = parts[0]?.[0] || "?";
@@ -79,11 +88,33 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   }
 
   function radiusFor(d) {
-    return isSpouseNodeName(d.data?.name || "") ? R_SPOUSE : R_PERSON;
+    const spouse = isSpouseNodeName(d.data?.name || "");
+    let r = spouse ? (R_SPOUSE + SPOUSE_BOOST) : R_PERSON;
+
+    if (d.depth === 0) r += ROOT_BOOST;
+    else if (d.depth === 1) r += TOP_BOOST;
+
+    return r;
   }
 
+  function photoUrl(d) {
+    return d.data?.photo || DEFAULT_AVATAR;
+  }
+
+  function isMatch(d, q) {
+    if (!q) return false;
+    const ql = q.toLowerCase();
+    const raw = (d.data?.name || "").toLowerCase();
+    const shown = (displayLabel(d) || "").toLowerCase();
+    return raw.includes(ql) || shown.includes(ql);
+  }
+
+  // -----------------------------
+  // Details panel
+  // -----------------------------
   function setDetails(d) {
     const panel = $("details");
+    if (!panel) return;
 
     if (!d) {
       panel.innerHTML = `
@@ -99,6 +130,7 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     const photo = d.data?.photo || "";
     const kids = nodeKids(d);
 
+    // Spouse node
     if (isSpouseNodeName(name)) {
       const role = spouseRole(name);
       const spouseName = spousePersonName(name);
@@ -111,6 +143,7 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
           <span class="pill">${role}</span>
           <span class="pill">Partner: ${partner}</span>
           <span class="pill">Branch: ${branch.replace("Sri ","")}</span>
+          ${photo ? `<span class="pill">Photo</span>` : ``}
         </div>
 
         ${
@@ -124,9 +157,13 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
       return;
     }
 
+    // Person node: spouse nodes are among children
     const spouseNodes = kids.filter(c => isSpouseNodeName(c.data?.name || ""));
     const spouses = spouseNodes.map(s => spousePersonName(s.data.name));
 
+    // Children list includes:
+    // - direct non-spouse children
+    // - children under spouse nodes
     const childrenSet = [];
     for (const c of kids) {
       const cname = c.data?.name || "";
@@ -135,10 +172,9 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
           if (gc.data?.name) childrenSet.push(gc.data.name);
         }
       } else {
-        childrenSet.push(cname);
+        if (cname) childrenSet.push(cname);
       }
     }
-    const children = childrenSet.filter(Boolean);
 
     panel.innerHTML = `
       <h3>${name}</h3>
@@ -155,8 +191,8 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
       }
 
       ${
-        children.length
-          ? `<strong>Children</strong><ul>${children.map(c => `<li>${c}</li>`).join("")}</ul>`
+        childrenSet.length
+          ? `<strong>Children</strong><ul>${childrenSet.map(c => `<li>${c}</li>`).join("")}</ul>`
           : `<p class="kicker">Children: (none listed / not recorded)</p>`
       }
 
@@ -164,7 +200,9 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     `;
   }
 
+  // -----------------------------
   // Collapse/expand helpers
+  // -----------------------------
   function collapseAll(node) {
     if (node.children) {
       node._children = node.children;
@@ -184,8 +222,15 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   function collapseToDepth(node, depth) {
     if (!node) return;
     if (depth === 999) { expandAll(node); return; }
-    if (node.depth >= depth) { collapseAll(node); return; }
-    if (node._children) { node.children = node._children; node._children = null; }
+
+    if (node.depth >= depth) {
+      collapseAll(node);
+      return;
+    }
+    if (node._children) {
+      node.children = node._children;
+      node._children = null;
+    }
     if (node.children) node.children.forEach(child => collapseToDepth(child, depth));
   }
 
@@ -200,31 +245,33 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     }
   }
 
+  // -----------------------------
   // Load data
+  // -----------------------------
   const data = await fetch("assets/data/family-tree.json").then(r => r.json());
   const root = d3.hierarchy(data);
 
+  // -----------------------------
   // SVG setup
+  // -----------------------------
   const treeContainer = $("tree");
-  const width = () => treeContainer.clientWidth || 1200;
+  const width = () => treeContainer?.clientWidth || 1200;
+  const height = () => treeContainer?.clientHeight || 700;
 
-  const dx = 120;
-  const dy = 300;
-
-  const tree = d3.tree().nodeSize([dx, dy]);
+  const tree = d3.tree().nodeSize([DX, DY]);
   const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
 
   const svg = d3.select("#tree")
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
-    .style("font", "13px Aptos, Segoe UI, system-ui, sans-serif")
+    .style("font", "15px Aptos, Segoe UI, system-ui, sans-serif")
     .style("user-select", "none");
 
   const defs = svg.append("defs");
   const g = svg.append("g");
 
-  // Subtle drop shadow filter for avatar ring
+  // Shadow for avatar ring
   defs.append("filter")
     .attr("id", "avatarShadow")
     .attr("x", "-30%").attr("y", "-30%")
@@ -236,6 +283,18 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     .attr("flood-color", "#0f172a")
     .attr("flood-opacity", 0.18);
 
+  // Strong selection glow
+  defs.append("filter")
+    .attr("id", "selectedGlow")
+    .attr("x", "-40%").attr("y", "-40%")
+    .attr("width", "180%").attr("height", "180%")
+    .append("feDropShadow")
+    .attr("dx", 0)
+    .attr("dy", 0)
+    .attr("stdDeviation", 5)
+    .attr("flood-color", "#1d4ed8")
+    .attr("flood-opacity", 0.55);
+
   // Zoom/Pan
   const zoomBehavior = d3.zoom()
     .scaleExtent([0.35, 2.8])
@@ -243,10 +302,10 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   svg.call(zoomBehavior);
 
   // IDs
-  let i = 0;
-  root.each(d => { d.id = ++i; });
+  let idCounter = 0;
+  root.each(d => { d.id = ++idCounter; });
 
-  // default collapse depth
+  // Default collapse
   collapseToDepth(root, 2);
 
   let selectedId = null;
@@ -254,37 +313,49 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
 
   setDetails(null);
 
-  // Build clipPaths for photo avatars
+  // -----------------------------
+  // Clip paths (avatar circular crop)
+  // -----------------------------
   function ensureClipPaths(nodes) {
     const clips = defs.selectAll("clipPath.avatar-clip")
       .data(nodes, d => d.id);
 
-    clips.enter()
+    const enter = clips.enter()
       .append("clipPath")
       .attr("class", "avatar-clip")
-      .attr("id", d => `clip-${d.id}`)
-      .append("circle")
-      .attr("cx", 0)
-      .attr("cy", 0)
+      .attr("id", d => `clip-${d.id}`);
+
+    enter.append("circle")
+      .attr("cx", 0).attr("cy", 0)
       .attr("r", d => radiusFor(d));
 
-    clips.select("circle").attr("r", d => radiusFor(d));
+    clips.select("circle")
+      .attr("r", d => radiusFor(d));
+
     clips.exit().remove();
   }
 
-  function photoUrl(d) {
-    // If explicit photo exists, use it.
-    if (d.data?.photo) return d.data.photo;
-    // Otherwise try default avatar image (optional).
-    return DEFAULT_AVATAR;
+  function setClipRadius(d, r) {
+    defs.select(`#clip-${d.id} circle`).attr("r", r);
   }
 
-  function isMatch(d, q) {
-    if (!q) return false;
-    const ql = q.toLowerCase();
-    const rawName = (d.data?.name || "").toLowerCase();
-    const shownName = displayLabel(d).toLowerCase();
-    return rawName.includes(ql) || shownName.includes(ql);
+  function setAvatarSize(groupSel, d, r) {
+    groupSel.select("circle.avatar-bg").attr("r", r);
+    groupSel.select("image.avatar-img")
+      .attr("x", -r).attr("y", -r)
+      .attr("width", r * 2).attr("height", r * 2);
+    groupSel.select("circle.avatar-ring").attr("r", r);
+
+    // keep clipping perfect
+    setClipRadius(d, r);
+
+    // update label distance
+    groupSel.select("text.node-label")
+      .attr("x", d._children ? -(r + 16) : (r + 16));
+
+    // spouse role label distance (if exists)
+    groupSel.select("text.role-label")
+      .attr("x", d._children ? -(r + 16) : (r + 16));
   }
 
   function selectNode(d) {
@@ -293,20 +364,27 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   }
 
   function toggleNode(d) {
-    if (d.children) { d._children = d.children; d.children = null; }
-    else if (d._children) { d.children = d._children; d._children = null; }
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else if (d._children) {
+      d.children = d._children;
+      d._children = null;
+    }
   }
 
+  // -----------------------------
+  // Render/update
+  // -----------------------------
   function update(source) {
     tree(root);
 
     const nodes = root.descendants();
     const links = root.links();
 
-    // Clip paths for ALL nodes (so avatars always stay inside circles)
     ensureClipPaths(nodes);
 
-    // viewBox bounds
+    // ViewBox bounds
     let left = root, right = root;
     root.eachBefore(n => {
       if (n.x < left.x) left = n;
@@ -314,8 +392,8 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     });
 
     const vbW = Math.max(width(), 1100);
-    const vbH = (right.x - left.x) + 220;
-    svg.attr("viewBox", [-100, left.x - 110, vbW, vbH]);
+    const vbH = (right.x - left.x) + 260;
+    svg.attr("viewBox", [-120, left.x - 130, vbW, vbH]);
 
     // Links
     const link = g.selectAll("path.link").data(links, d => d.target.id);
@@ -344,7 +422,29 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
       .attr("class", "node")
       .attr("transform", d => `translate(${source.y0 ?? 0},${source.x0 ?? 0})`);
 
-    // Avatar background circle (fallback color)
+    // Hover: gently enlarge avatar
+    nodeEnter
+      .on("mouseenter", function (event, d) {
+        const gsel = d3.select(this);
+        const r = radiusFor(d);
+
+        gsel.raise();
+        gsel.selectAll("circle.avatar-bg, image.avatar-img, circle.avatar-ring")
+          .transition().duration(HOVER_MS);
+
+        setAvatarSize(gsel, d, r + HOVER_DELTA);
+      })
+      .on("mouseleave", function (event, d) {
+        const gsel = d3.select(this);
+        const r = radiusFor(d);
+
+        gsel.selectAll("circle.avatar-bg, image.avatar-img, circle.avatar-ring")
+          .transition().duration(HOVER_MS);
+
+        setAvatarSize(gsel, d, r);
+      });
+
+    // Background circle (also handles click: details + toggle)
     nodeEnter.append("circle")
       .attr("class", "avatar-bg")
       .attr("r", d => radiusFor(d))
@@ -359,7 +459,7 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
         update(d);
       });
 
-    // Avatar image (clipped inside circle)
+    // Avatar image (clipped)
     nodeEnter.append("image")
       .attr("class", "avatar-img")
       .attr("href", d => photoUrl(d))
@@ -376,26 +476,23 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
         toggleNode(d);
         update(d);
       })
-      // If the default avatar image doesn't exist, keep the background + show initials instead
       .on("error", function () {
+        // If image fails to load, remove it (initials will remain if configured)
         d3.select(this).attr("href", null);
       });
 
-    // Initials fallback (visible if no photo or photo fails)
+    // Initials fallback (shown only if no explicit photo AND default avatar fails)
     nodeEnter.append("text")
       .attr("class", "avatar-initials")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#0f172a" : "#ffffff")
-      .style("font-weight", 800)
-      .style("font-size", d => (radiusFor(d) <= 16 ? "10px" : "11px"))
-      .text(d => {
-        // show initials only when there is no explicit photo
-        return d.data?.photo ? "" : initialsFor(d.data?.name || "");
-      })
+      .style("font-weight", 900)
+      .style("font-size", d => (radiusFor(d) <= 18 ? "11px" : "12px"))
+      .text(d => d.data?.photo ? "" : initialsFor(d.data?.name || ""))
       .style("pointer-events", "none");
 
-    // White ring (like avatar border) + subtle shadow
+    // White ring + shadow (selection glow applied later)
     nodeEnter.append("circle")
       .attr("class", "avatar-ring")
       .attr("r", d => radiusFor(d))
@@ -405,14 +502,16 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
       .style("filter", "url(#avatarShadow)")
       .style("pointer-events", "none");
 
-    // Name label (to the right/left depending on collapsed)
+    // Name label
     nodeEnter.append("text")
       .attr("class", "node-label")
       .attr("dy", "0.32em")
-      .attr("x", d => (d._children ? -(radiusFor(d) + 30) : (radiusFor(d) + 30)))
+      .attr("x", d => (d._children ? -(radiusFor(d) + 16) : (radiusFor(d) + 16)))
       .attr("text-anchor", d => (d._children ? "end" : "start"))
       .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#334155" : "#0f172a")
       .style("cursor", "pointer")
+      .style("font-size", d => (d.depth <= 1 ? `${NAME_FONT_TOP}px` : `${NAME_FONT_MAIN}px`))
+      .style("font-weight", d => (d.depth <= 1 ? 800 : 650))
       .text(d => displayLabel(d))
       .on("click", (event, d) => {
         event.stopPropagation();
@@ -420,24 +519,31 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
         update(d);
       });
 
-    // Small role label below spouse node
+    // Spouse role label (Wife/Husband)
     nodeEnter.filter(d => isSpouseNodeName(d.data?.name || ""))
       .append("text")
+      .attr("class", "role-label")
       .attr("dy", "1.6em")
-      .attr("x", d => (d._children ? -(radiusFor(d) + 30) : (radiusFor(d) + 30)))
+      .attr("x", d => (d._children ? -(radiusFor(d) + 16) : (radiusFor(d) + 16)))
       .attr("text-anchor", d => (d._children ? "end" : "start"))
       .attr("fill", "#64748b")
-      .style("font-weight", 700)
-      .style("font-size", "11px")
+      .style("font-weight", 800)
+      .style("font-size", `${ROLE_FONT}px`)
       .text(d => spouseRole(d.data.name));
 
     nodeEnter.append("title").text(d => d.data?.name || "");
 
     const nodeMerge = nodeEnter.merge(node);
 
+    // Apply match/selected classes (for potential CSS)
     nodeMerge
       .classed("selected", d => d.id === selectedId)
       .classed("match", d => isMatch(d, currentQuery));
+
+    // Strong selection glow + thicker ring on selected
+    nodeMerge.select("circle.avatar-ring")
+      .style("filter", d => (d.id === selectedId) ? "url(#selectedGlow)" : "url(#avatarShadow)")
+      .attr("stroke-width", d => (d.id === selectedId) ? (RING + 2) : RING);
 
     nodeMerge.transition().duration(250)
       .attr("transform", d => `translate(${d.y},${d.x})`);
@@ -449,7 +555,9 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
 
   update(root);
 
+  // -----------------------------
   // Search
+  // -----------------------------
   function findMatches(query) {
     const q = (query || "").trim().toLowerCase();
     if (!q) return [];
@@ -457,8 +565,8 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   }
 
   function centerOnNode(d) {
-    const w = treeContainer.clientWidth || 1200;
-    const h = treeContainer.clientHeight || 700;
+    const w = width();
+    const h = height();
     const scale = 1.0;
     const transform = d3.zoomIdentity
       .translate(w / 2 - d.y * scale, h / 2 - d.x * scale)
@@ -467,11 +575,18 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
   }
 
   function runSearch() {
-    currentQuery = ($("searchInput").value || "").trim().toLowerCase();
-    if (!currentQuery) { update(root); return; }
+    currentQuery = ($("searchInput")?.value || "").trim().toLowerCase();
+    if (!currentQuery) {
+      update(root);
+      return;
+    }
 
     const matches = findMatches(currentQuery);
-    if (!matches.length) { setDetails(null); update(root); return; }
+    if (!matches.length) {
+      setDetails(null);
+      update(root);
+      return;
+    }
 
     const first = matches[0];
     expandToNode(first);
@@ -483,42 +598,47 @@ const ROLE_FONT = 12;       // spouse role label (Wife/Husband)
     centerOnNode(first);
   }
 
-  // UI wiring
-  $("searchBtn").addEventListener("click", (e) => { e.preventDefault(); runSearch(); });
-  $("searchInput").addEventListener("keydown", (e) => {
+  // -----------------------------
+  // UI wiring (expects these IDs in family-tree.html)
+  // searchInput, searchBtn, clearBtn, depthSelect, collapseBtn, expandBtn
+  // tree, details
+  // -----------------------------
+  $("searchBtn")?.addEventListener("click", (e) => { e.preventDefault(); runSearch(); });
+  $("searchInput")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); runSearch(); }
   });
 
-  $("clearBtn").addEventListener("click", (e) => {
+  $("clearBtn")?.addEventListener("click", (e) => {
     e.preventDefault();
-    $("searchInput").value = "";
+    if ($("searchInput")) $("searchInput").value = "";
     currentQuery = "";
     selectedId = null;
     setDetails(null);
-    const depth = parseInt($("depthSelect").value, 10);
+    const depth = parseInt($("depthSelect")?.value || "2", 10);
     collapseToDepth(root, depth);
     update(root);
   });
 
-  $("collapseBtn").addEventListener("click", (e) => {
+  $("collapseBtn")?.addEventListener("click", (e) => {
     e.preventDefault();
-    const depth = parseInt($("depthSelect").value, 10);
+    const depth = parseInt($("depthSelect")?.value || "2", 10);
     collapseToDepth(root, depth);
     update(root);
   });
 
-  $("expandBtn").addEventListener("click", (e) => {
+  $("expandBtn")?.addEventListener("click", (e) => {
     e.preventDefault();
     expandAll(root);
     update(root);
   });
 
-  $("depthSelect").addEventListener("change", () => {
-    const depth = parseInt($("depthSelect").value, 10);
+  $("depthSelect")?.addEventListener("change", () => {
+    const depth = parseInt($("depthSelect")?.value || "2", 10);
     collapseToDepth(root, depth);
     update(root);
   });
 
+  // Click background clears selection
   svg.on("click", () => {
     selectedId = null;
     setDetails(null);
