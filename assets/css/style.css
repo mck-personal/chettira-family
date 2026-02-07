@@ -190,6 +190,130 @@ main{
   letter-spacing: 0.02em;
 }
 
+.festival-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+
+.festival-tab{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.festival-tab:hover{
+  transform: translateY(-1px);
+  border-color: rgba(10, 10, 10, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.festival-tab:focus-visible{
+  outline: 2px solid rgba(10, 10, 10, 0.5);
+  outline-offset: 2px;
+}
+
+.primary-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 24px;
+  border-bottom: 2px solid rgba(10, 10, 10, 0.08);
+  padding-bottom: 12px;
+}
+
+.primary-tab{
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(10, 10, 10, 0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.55));
+  color: #0a0a0a;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 150ms ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.primary-tab:hover{
+  transform: translateY(-2px);
+  border-color: rgba(10, 10, 10, 0.18);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255,255,255,0.95);
+}
+
+.primary-tab:focus-visible{
+  outline: 2px solid rgba(10, 10, 10, 0.5);
+  outline-offset: 2px;
+}
+
+.festival-content{
+  margin-bottom: 32px;
+  scroll-margin-top: 120px;
+}
+
+
+.year-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 14px 0 16px;
+}
+
+.year-tab{
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(10, 10, 10, 0.1);
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 120ms ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.year-tab:hover{
+  transform: translateY(-1px);
+  border-color: rgba(10, 10, 10, 0.18);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.list li > a {
+  color: #1a5f4a;
+  font-weight: inherit;
+  display: inline;
+  transition: color 150ms ease;
+}
+
+.list li > a:hover {
+  color: #c9a961;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.list li > a strong {
+  font-weight: 600;
+}
+
+.anchor-target{
+  scroll-margin-top: 120px;
+}
+
+
 /* Buttons */
 .cta{
   margin-top: 12px;
