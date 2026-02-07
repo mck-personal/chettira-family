@@ -2,19 +2,34 @@
    Chettira Family — Blue & White Professional
    ========================================== */
 
-:root{
-  --bg: #f5f1ed;          /* warm cream background */
-  --surface: #fefdfb;     /* off-white surface */
-  --ink: #2a2520;         /* warm dark brown text */
-  --muted: #8b8278;       /* warm taupe muted */
-  --border: #e5dcd4;      /* soft light border */
+ :root{
+  --bg: #050505;          /* jet black background */
+  --surface: #121212;     /* glossy dark surface */
+  --surface-alt: #1a1a1a; /* chip/background accent */
+  --surface-gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)), #121212;
+  --gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  --ink: #f8f8f8;         /* white text */
+  --muted: #c2c2c2;       /* muted light gray */
+  --border: #2a2a2a;      /* subtle dark border */
 
   --brand: #1a5f4a;       /* deep emerald teal */
   --brand-2: #c9a961;     /* warm gold accent */
   --brand-3: #e5d4bc;     /* cream highlight */
 
   --radius: 12px;
-  --shadow: 0 8px 28px rgba(26, 95, 74, 0.1);
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+body[data-theme="light"]{
+  --bg: #f2f2f2;
+  --surface: #ffffff;
+  --surface-alt: #f4f4f4;
+  --surface-gloss: linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0)), #ffffff;
+  --gloss: linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0));
+  --ink: #1b1b1b;
+  --muted: #4b4b4b;
+  --border: #d6d6d6;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 *{ box-sizing:border-box; }
@@ -32,7 +47,8 @@ body{
     Roboto,
     Arial,
     sans-serif;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: none;
   color: var(--ink);
   line-height: 1.65;
   font-weight: 300;
@@ -44,13 +60,13 @@ p {
 
 /* Links */
 a {
-  color: #1a5f4a;
+  color: var(--ink);
   text-decoration: none;
   transition: color 200ms ease;
 }
 
 a:hover {
-  color: #c9a961;
+  color: var(--brand-2);
 }
 
 
@@ -67,10 +83,11 @@ header{
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(254, 253, 251, 0.96);
+  background: var(--surface);
+  background-image: var(--gloss);
   border-bottom: 2px solid #1a5f4a;
   backdrop-filter: blur(12px);
-  background-color: rgba(254, 253, 251, 0.96);
+  background-color: var(--surface);
   box-shadow: 0 2px 16px rgba(26, 95, 74, 0.12);
 }
 
@@ -82,14 +99,38 @@ header{
   gap: 12px;
 }
 
+.theme-toggle{
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-gloss);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.theme-toggle:hover{
+  transform: translateY(-1px);
+  border-color: var(--brand-2);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+.theme-toggle:focus-visible{
+  outline: 2px solid var(--brand-2);
+  outline-offset: 2px;
+}
+
 .brand h1{
   margin:0;
-  color: #0a0a0a;
+  color: var(--ink);
   font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: -0.4px;
   background: none;
-  -webkit-text-fill-color: #0a0a0a;
+  -webkit-text-fill-color: var(--ink);
 }
 
 nav{
@@ -102,7 +143,7 @@ nav{
 }
 
 nav a{
-  color: #0a0a0a;
+  color: var(--ink);
   text-decoration:none;
   padding: 8px 12px;
   border-radius: 8px;
@@ -114,7 +155,7 @@ nav a{
 }
 
 nav a:hover{
-  color: #0a0a0a;
+  color: var(--brand-2);
   background: transparent;
   border-color: transparent;
   box-shadow: none;
@@ -122,7 +163,7 @@ nav a:hover{
 
 /* Remove strong highlighted tab for current page; use subtle text color instead */
 nav a[aria-current="page"]{
-  color: #0a0a0a;
+  color: var(--ink);
   font-weight: 600;
   background: transparent;
   border: 1px solid transparent;
@@ -138,7 +179,7 @@ nav a + a::before{
   transform: translateY(-50%);
   width: 1px;
   height: 18px;
-  background: rgba(138,130,120,0.18);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 1px;
 }
 /* Search feature temporarily removed */
@@ -200,9 +241,9 @@ main{
   justify-content: center;
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(10, 10, 10, 0.12);
-  background: #ffffff;
-  color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--surface-alt);
+  color: var(--ink);
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
@@ -212,12 +253,12 @@ main{
 
 .festival-tab:hover{
   transform: translateY(-1px);
-  border-color: rgba(10, 10, 10, 0.2);
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .festival-tab:focus-visible{
-  outline: 2px solid rgba(10, 10, 10, 0.5);
+  outline: 2px solid rgba(255, 255, 255, 0.6);
   outline-offset: 2px;
 }
 
@@ -226,7 +267,7 @@ main{
   flex-wrap: wrap;
   gap: 12px;
   margin: 16px 0 24px;
-  border-bottom: 2px solid rgba(10, 10, 10, 0.08);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 12px;
 }
 
@@ -234,9 +275,9 @@ main{
   display: inline-block;
   padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(10, 10, 10, 0.12);
-  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.55));
-  color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+  color: var(--ink);
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
@@ -246,12 +287,12 @@ main{
 
 .primary-tab:hover{
   transform: translateY(-2px);
-  border-color: rgba(10, 10, 10, 0.18);
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255,255,255,0.95);
 }
 
 .primary-tab:focus-visible{
-  outline: 2px solid rgba(10, 10, 10, 0.5);
+  outline: 2px solid rgba(255, 255, 255, 0.6);
   outline-offset: 2px;
 }
 
@@ -271,9 +312,9 @@ main{
   display: inline-block;
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(10, 10, 10, 0.1);
-  background: #ffffff;
-  color: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--surface-alt);
+  color: var(--ink);
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
@@ -283,19 +324,19 @@ main{
 
 .year-tab:hover{
   transform: translateY(-1px);
-  border-color: rgba(10, 10, 10, 0.18);
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .list li > a {
-  color: #1a5f4a;
+  color: var(--brand-2);
   font-weight: inherit;
   display: inline;
   transition: color 150ms ease;
 }
 
 .list li > a:hover {
-  color: #c9a961;
+  color: #f1d99a;
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
@@ -386,9 +427,9 @@ label{
 input[type="text"], input[type="email"], textarea{
   width:100%;
   padding: 12px 14px;
-  border: 2px solid #e5dcd4;
+  border: 2px solid var(--border);
   border-radius: 8px;
-  background: #fefdfb;
+  background: var(--surface-alt);
   font-size: 0.95rem;
   color: var(--ink);
   margin-bottom: 12px;
@@ -398,7 +439,7 @@ input[type="text"], input[type="email"], textarea{
 input[type="text"]:focus, input[type="email"]:focus, textarea:focus{
   outline: none;
   border-color: #1a5f4a;
-  background: #fefdfb;
+  background: var(--surface-alt);
   box-shadow: 0 0 20px rgba(26, 95, 74, 0.15);
 }
 
@@ -406,7 +447,7 @@ input[type="text"]:focus, input[type="email"]:focus, textarea:focus{
 
 /* Cards / Grid */
 .card{
-  background: var(--surface);
+  background: var(--surface-gloss);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
@@ -496,10 +537,7 @@ code {
 
 .hero--luxury {
   padding: 96px 0 64px;
-  background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(26,95,74,0.08), transparent 40%),
-    radial-gradient(1000px 500px at 85% 0%, rgba(201,169,97,0.06), transparent 45%),
-    #f5f1ed;
+  background: var(--bg);
 }
 
 .hero--luxury .hero-inner {
@@ -513,7 +551,7 @@ code {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 600;
-  color: #1a5f4a;
+  color: var(--brand-2);
 }
 
 /* Main heading */
@@ -523,7 +561,7 @@ code {
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.08;
-  color: #2a2520;
+  color: var(--ink);
 }
 
 /* Subtitle */
@@ -532,7 +570,7 @@ code {
   max-width: 70ch;
   font-size: 1.15rem;
   line-height: 1.75;
-  color: #8b8278;
+  color: var(--muted);
 }
 
 /* Actions */
@@ -566,21 +604,21 @@ code {
 
 .hero--luxury .btn.secondary {
   background: transparent;
-  color: #8b8278;
-  border: 2px solid #8b8278;
+  color: var(--muted);
+  border: 2px solid var(--muted);
 }
 
 .hero--luxury .btn.secondary:hover {
-  color: #1a5f4a;
-  border-color: #1a5f4a;
-  background: rgba(26, 95, 74, 0.08);
+  color: var(--brand-2);
+  border-color: var(--brand-2);
+  background: rgba(201, 169, 97, 0.12);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(26, 95, 74, 0.15);
 }
 
 /* Make header feel product-grade */
 header {
-  background: rgba(254, 253, 251, 0.96);
+  background: var(--surface);
   border-bottom: 2px solid #1a5f4a;
 }
 
