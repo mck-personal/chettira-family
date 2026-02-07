@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Family Tree — Chettira Family Heritage</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
 
   <style>
@@ -24,16 +26,23 @@
     .toolbar input{
       padding: 9px 12px;
       border-radius: 10px;
-      border: 1px solid #e2e8f0;
+      border: 2px solid #e5dcd4;
       width: min(360px, 100%);
       outline: none;
-      background: #fff;
+      background: #fefdfb;
+      color: #2a2520;
+      transition: all 200ms ease;
+    }
+    .toolbar input:focus{
+      border-color: #1a5f4a;
+      box-shadow: 0 0 12px rgba(26, 95, 74, 0.2);
     }
     .toolbar select{
       padding: 9px 10px;
       border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      background: #fff;
+      border: 2px solid #e5dcd4;
+      background: #fefdfb;
+      color: #2a2520;
     }
     .btn.small{
       padding: 9px 12px;
@@ -43,22 +52,22 @@
     #tree{
       height: 72vh;
       min-height: 520px;
-      border: 1px solid #e2e8f0;
+      border: 2px solid #1a5f4a;
       border-radius: 12px;
-      background: #fff;
+      background: #fefdfb;
       overflow: hidden;
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 8px 28px rgba(26, 95, 74, 0.1);
     }
     .tree-help{
       margin-top: 10px;
-      color: #475569;
+      color: #8b8278;
       font-size: 0.95rem;
     }
 
     /* Details panel */
     #details h3{ margin: 0 0 8px; }
     #details .meta{
-      color: #475569;
+      color: #8b8278;
       font-size: 0.95rem;
       margin: 0 0 12px;
     }
@@ -66,11 +75,11 @@
       display:inline-block;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(29,78,216,.10);
-      color: #0b2a6f;
+      background: rgba(26,95,74,.12);
+      color: #1a5f4a;
       font-weight: 700;
       font-size: 0.85rem;
-      border: 1px solid rgba(29,78,216,.20);
+      border: 2px solid #1a5f4a;
       margin-right: 8px;
       margin-top: 6px;
     }
@@ -81,12 +90,12 @@
     .node text{ font-weight: 650; }
     .match circle{
       stroke-width: 4 !important;
-      filter: drop-shadow(0 4px 10px rgba(29, 78, 216, .25));
+      filter: drop-shadow(0 4px 10px rgba(26, 95, 74, .25));
     }
     .selected circle{
       stroke-width: 4 !important;
-      stroke: #0b2a6f !important;
-      filter: drop-shadow(0 6px 14px rgba(11, 42, 111, .25));
+      stroke: #1a5f4a !important;
+      filter: drop-shadow(0 6px 14px rgba(26, 95, 74, .35));
     }
 
     @media (max-width: 980px){
@@ -178,3 +187,4 @@
 <script src="assets/js/tree.js"></script>
 </body>
 </html>
+ 

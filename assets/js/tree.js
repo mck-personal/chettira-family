@@ -5,10 +5,10 @@
   // Config
   // -----------------------------
   const BRANCH_COLORS = {
-    "Sri Bopaiah": "#1d4ed8",
-    "Sri Subbaiah": "#0ea5e9",
-    "Sri Chengappa": "#6366f1",
-    "ROOT": "#2563eb"
+    "Sri Bopaiah": "#1a5f4a",
+    "Sri Subbaiah": "#2d7a63",
+    "Sri Chengappa": "#1f6d54",
+    "ROOT": "#0f4a39"
   };
 
   // Spouse detection in your JSON format
@@ -284,7 +284,7 @@
     .attr("dx", 0)
     .attr("dy", 2)
     .attr("stdDeviation", 2.5)
-    .attr("flood-color", "#0f172a")
+    .attr("flood-color", "#f5f1ed")
     .attr("flood-opacity", 0.18);
 
   // Strong selection glow
@@ -296,7 +296,7 @@
     .attr("dx", 0)
     .attr("dy", 0)
     .attr("stdDeviation", 5)
-    .attr("flood-color", "#1d4ed8")
+    .attr("flood-color", "#1a5f4a")
     .attr("flood-opacity", 0.55);
 
   // Zoom/Pan
@@ -409,7 +409,7 @@
       .append("path")
       .attr("class", "link")
       .attr("fill", "none")
-      .attr("stroke", "#93c5fd")
+      .attr("stroke", "#2d7a63")
       .attr("stroke-width", 2)
       .attr("d", d => {
         const o = { x: source.x0 ?? 0, y: source.y0 ?? 0 };
@@ -455,7 +455,7 @@
     nodeEnter.append("circle")
       .attr("class", "avatar-bg")
       .attr("r", d => radiusFor(d))
-      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#ffffff" : getBranchColor(d))
+      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#fefdfb" : getBranchColor(d))
       .attr("stroke", d => getBranchColor(d))
       .attr("stroke-width", 2)
       .style("cursor", "pointer")
@@ -492,7 +492,7 @@
       .attr("class", "avatar-initials")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
-      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#0f172a" : "#ffffff")
+      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#f5f1ed" : "#fefdfb")
       .style("font-weight", 900)
       .style("font-size", d => (radiusFor(d) <= 18 ? "11px" : "12px"))
       .text(d => d.data?.photo ? "" : initialsFor(d.data?.name || ""))
@@ -503,7 +503,7 @@
       .attr("class", "avatar-ring")
       .attr("r", d => radiusFor(d))
       .attr("fill", "none")
-      .attr("stroke", "#ffffff")
+      .attr("stroke", "#fefdfb")
       .attr("stroke-width", RING)
       .style("filter", "url(#avatarShadow)")
       .style("pointer-events", "none");
@@ -514,7 +514,7 @@
       .attr("x", 0)
       .attr("y", d => radiusFor(d) + LABEL_GAP)
       .attr("text-anchor", "middle")
-      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#334155" : "#0f172a")
+      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#e5dcd4" : "#2a2520")
       .style("cursor", "pointer")
       .style("font-size", d => (d.depth <= 1 ? `${NAME_FONT_TOP}px` : `${NAME_FONT_MAIN}px`))
       .style("font-weight", d => (d.depth <= 1 ? 800 : 650))
