@@ -261,6 +261,19 @@ main{
   letter-spacing: 0.02em;
 }
 
+.page-title{
+  margin: 0 0 14px;
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+.subtopic-title{
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
 .festival-tabs{
   display: flex;
   flex-direction: column;
@@ -547,6 +560,13 @@ footer .container{
 }
 
 small{ font-size: 0.88rem; }
+
+hr{
+  border: 0;
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0 16px;
+}
 
 code {
   background: rgba(26, 95, 74, 0.1);

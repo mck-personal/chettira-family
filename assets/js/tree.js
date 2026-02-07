@@ -124,7 +124,7 @@
 
     if (!d) {
       panel.innerHTML = `
-        <h3>Node Details</h3>
+        <h3 class="subtopic-title">Node Details</h3>
         <p class="meta">Click any node (circle or name) to view details here.</p>
       `;
       return;
@@ -144,7 +144,7 @@
       const spouseChildren = kids.map(c => c.data?.name).filter(Boolean);
 
       panel.innerHTML = `
-        <h3>${spouseName}</h3>
+        <h3 class="subtopic-title">${spouseName}</h3>
         <div class="meta">
           <span class="pill">${role}</span>
           <span class="pill">Partner: ${partner}</span>
@@ -180,7 +180,7 @@
     }
 
     panel.innerHTML = `
-      <h3>${name}</h3>
+      <h3 class="subtopic-title">${name}</h3>
       <div class="meta">
         <span class="pill">Branch: ${branch.replace("Sri ","")}</span>
         ${photo ? `<span class="pill">Photo</span>` : ``}
