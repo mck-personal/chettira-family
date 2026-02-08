@@ -522,6 +522,10 @@ input[type="text"]:focus, input[type="email"]:focus, textarea:focus{
   padding-left: 18px;
 }
 
+.contact-details{
+  font-size: 0.85rem;
+}
+
 .list li{
   margin: 7px 0;
 }
