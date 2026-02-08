@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <script src="js/theme-toggle.js" defer></script>
    <script src="js/gallery-lightbox.js" defer></script>
+  <script src="js/gallery-search.js" defer></script>
 </head>
 
 <body>
@@ -42,25 +43,84 @@
         <p class="kicker">Photo memories of the Chettira Family.</p>
 
         <p>
-          Add your photos inside <code>assets/images/</code> and then replace the placeholders below with real images.
+          All family photos are collected here. Click any image to view it full size.
         </p>
 
-        <hr />
-
-        <h3 class="subtopic-title">Featured Photos</h3>
-        <div class="gallery">
-          <div class="ph">Photo 1</div>
-          <div class="ph">Photo 2</div>
-          <div class="ph">Photo 3</div>
-          <div class="ph">Photo 4</div>
-          <div class="ph">Photo 5</div>
-          <div class="ph">Photo 6</div>
+        <div class="gallery-search">
+          <label for="gallery-search">Search photos and videos</label>
+          <input id="gallery-search" type="search" placeholder="Search by name or caption" autocomplete="off" />
         </div>
 
         <hr />
 
+        <h3 class="subtopic-title">All Photos</h3>
+        <div class="gallery photo-grid" data-gallery>
+          <figure class="media-tile">
+            <img src="assets/images/maithalappa/1.maithalappa.jpg" alt="Maithalappa deva nade, pooja time on 12th April 2025 at 5:26 AM" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Maithalappa deva nade, pooja time on 12th April 2025 at 5:26 AM</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/kodava-tribe.jpg" alt="Kodava tribe" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Kodava tribe</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/appaji.jpg" alt="Appaji" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Appaji</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/a.bopanna.jpg" alt="Bopanna" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Bopanna</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/a.ganapathy.jpg" alt="Ganapathy" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Ganapathy</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/a.mandanna.png" alt="Mandanna" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Mandanna</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/a.mayamma.jpg" alt="Mayamma" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Mayamma</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/c.belliappa.png" alt="Belliappa" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Belliappa</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/c.joyappa.jpg" alt="Joyappa" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Joyappa</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/c.kuttappa.jpg" alt="Kuttappa" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Kuttappa</figcaption>
+          </figure>
+          <figure class="media-tile">
+            <img src="assets/images/people/n.madappa.png" alt="Madappa" loading="lazy" decoding="async" />
+            <figcaption class="media-caption">Madappa</figcaption>
+          </figure>
+        </div>
+
+        <hr />
+
+        <h3 class="subtopic-title">All Videos</h3>
+        <div class="gallery photo-grid" data-gallery>
+          <figure class="media-tile video-tile">
+            <video controls preload="metadata" poster="assets/images/maithalappa/1.maithalappa.jpg" aria-label="Maithalappa deva nade, pooja time on 12th April 2025 at 5:26 AM" controlslist="nodownload noplaybackrate noremoteplayback" disablepictureinpicture>
+              <source src="assets/videos/maithalappa/2025/1.maithalappa.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <span class="play-icon" aria-hidden="true"></span>
+            <figcaption class="media-caption">Maithalappa deva nade, pooja time on 12th April 2025 at 5:26 AM</figcaption>
+          </figure>
+        </div>
+
+        <p class="gallery-empty" hidden>No matching photos or videos.</p>
+
+        <hr />
+
         <p class="kicker">
-          If you share a few images (or filenames), I’ll generate the exact <code>&lt;img&gt;</code> tags for you.
+          Add more photos by placing files in <code>assets/images/</code> and copying the same pattern above.
         </p>
       </div>
     </div>
