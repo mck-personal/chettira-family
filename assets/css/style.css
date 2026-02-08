@@ -639,6 +639,10 @@ input[type="text"]:focus, input[type="email"]:focus, textarea:focus{
 
 .contact-form .btn{ padding: 10px 14px; }
 
+.hp-field{
+  display: none;
+}
+
 /* Cards / Grid */
 .card{
   background: var(--surface-gloss);

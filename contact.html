@@ -60,7 +60,14 @@
 
         <div class="col-6 contact-form">
           <h3 class="subtopic-title">Send a message</h3>
-          <form action="#" method="post" id="contact-form">
+          <form action="https://api.web3forms.com/submit" method="post" id="contact-form">
+            <input type="hidden" name="access_key" value="c9fd8a45-4ad9-4c8b-8277-20f051a27db1">
+            <input type="hidden" name="subject" value="Chettira Family Contact Form">
+            <input type="hidden" name="from_name" value="Chettira Family Heritage">
+
+            <label class="hp-field" for="botcheck" aria-hidden="true">Leave this field blank</label>
+            <input class="hp-field" type="text" id="botcheck" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
 
@@ -75,7 +82,7 @@
               <button type="reset" class="btn secondary">Reset</button>
             </div>
 
-            <p class="kicker" style="margin-top:12px">Note: This form is client-side only. To attach photos or documents, please email us directly.</p>
+            <p class="kicker" style="margin-top:12px">Note: Replace the access key with your Web3Forms key so messages deliver to shari4maddy@gmail.com. For attachments, please email us directly.</p>
           </form>
         </div>
       </div>
