@@ -953,7 +953,22 @@ code {
 
 .hero--luxury {
   padding: 96px 0 64px;
+  position: relative;
   background: var(--bg);
+  isolation: isolate;
+}
+
+.hero--luxury::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 5, 5, 0.82), rgba(5, 5, 5, 0.92));
+  opacity: 1;
+  z-index: -1;
+}
+
+body[data-theme="light"] .hero--luxury::before{
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(242, 242, 242, 0.92));
 }
 
 .hero--luxury .hero-inner {
@@ -1016,6 +1031,28 @@ code {
   background: #0f4a39;
   transform: translateY(-2px);
   box-shadow: 0 12px 35px rgba(26, 95, 74, 0.35);
+}
+
+.feature-figure{
+  margin: 16px 0 0;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-gloss);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.feature-figure img{
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+}
+
+.feature-figure figcaption{
+  margin: 10px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 .hero--luxury .btn.secondary {
