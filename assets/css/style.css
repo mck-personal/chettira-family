@@ -159,7 +159,7 @@ body[data-theme="light"] .theme-toggle{
   margin:0;
   color: var(--ink);
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.4px;
   background: none;
   -webkit-text-fill-color: var(--ink);
