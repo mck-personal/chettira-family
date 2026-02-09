@@ -20,7 +20,7 @@
   }
 
   var saved = localStorage.getItem(storageKey);
-  applyTheme(saved === "light" ? "light" : "dark");
+  applyTheme(saved === "dark" ? "dark" : "light");
 
   toggle.addEventListener("click", function () {
     var isLight = document.body.getAttribute("data-theme") === "light";
