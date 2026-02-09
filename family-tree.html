@@ -26,11 +26,11 @@
     .toolbar input{
       padding: 9px 12px;
       border-radius: 10px;
-      border: 2px solid #e5dcd4;
+      border: 2px solid var(--border);
       width: min(360px, 100%);
       outline: none;
-      background: #fefdfb;
-      color: #2a2520;
+      background: var(--surface-alt);
+      color: var(--ink);
       transition: all 200ms ease;
     }
     .toolbar input:focus{
@@ -40,9 +40,9 @@
     .toolbar select{
       padding: 9px 10px;
       border-radius: 10px;
-      border: 2px solid #e5dcd4;
-      background: #fefdfb;
-      color: #2a2520;
+      border: 2px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--ink);
     }
     .btn.small{
       padding: 9px 12px;
@@ -54,20 +54,23 @@
       min-height: 520px;
       border: 2px solid #1a5f4a;
       border-radius: 12px;
-      background: #fefdfb;
+      background: var(--surface-alt);
       overflow: hidden;
       box-shadow: 0 8px 28px rgba(26, 95, 74, 0.1);
     }
+    body:not([data-theme="light"]) #tree{
+      background: #ffffff;
+    }
     .tree-help{
       margin-top: 10px;
-      color: #8b8278;
+      color: var(--muted);
       font-size: 0.95rem;
     }
 
     /* Details panel */
     #details h3{ margin: 0 0 8px; }
     #details .meta{
-      color: #8b8278;
+      color: var(--muted);
       font-size: 0.95rem;
       margin: 0 0 12px;
     }
@@ -148,7 +151,7 @@
 
         <div class="toolbar">
           <input id="searchInput" type="text" placeholder="Search a name (e.g., Mandanna / Mayamma)..." />
-          <a href="#" class="btn primary small" id="searchBtn">Search</a>
+          <a href="#" class="btn secondary small" id="searchBtn">Search</a>
           <a href="#" class="btn secondary small" id="clearBtn">Clear</a>
 
           <span style="flex:1"></span>
@@ -162,7 +165,7 @@
           </select>
 
           <a href="#" class="btn secondary small" id="collapseBtn">Apply</a>
-          <a href="#" class="btn primary small" id="expandBtn">Expand All</a>
+          <a href="#" class="btn secondary small" id="expandBtn">Expand All</a>
         </div>
 
         <div class="tree-layout">
