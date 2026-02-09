@@ -446,8 +446,9 @@ main{
 }
 
 .festival-tab:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 .festival-tab:focus-visible{
@@ -479,9 +480,9 @@ main{
 }
 
 .primary-tab:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 .primary-tab:focus-visible{
@@ -505,20 +506,20 @@ main{
   display: inline-block;
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid transparent;
   background: var(--surface-alt);
   color: var(--ink);
   font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
   transition: all 120ms ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.16);
 }
 
 .year-tab:hover{
-  transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 .list li > a {
@@ -575,8 +576,9 @@ main{
 }
 
 .btn.primary:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 .btn.secondary{
@@ -595,8 +597,9 @@ body[data-theme="light"] .hero--luxury .btn.secondary{
 }
 
 .btn.secondary:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 /* Contact form styles */
@@ -1055,8 +1058,9 @@ body[data-theme="light"] .hero--luxury::before{
 }
 
 .hero--luxury .btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 .feature-figure{
@@ -1089,8 +1093,9 @@ body[data-theme="light"] .hero--luxury::before{
 }
 
 .hero--luxury .btn.secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px) scale(1.025);
+  box-shadow: 0 32px 60px rgba(0, 0, 0, 0.34);
+  filter: brightness(1.08);
 }
 
 /* Make header feel product-grade */
