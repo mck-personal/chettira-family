@@ -183,15 +183,21 @@ nav a{
   font-size: 0.85rem;
   font-weight: 400;
   position: relative;
-  transition: color 180ms ease, letter-spacing 180ms ease, font-size 180ms ease, padding 180ms ease;
+  transition: color 180ms ease;
   border: 1px solid transparent;
+}
+
+nav a span{
+  display: inline-block;
+  transition: transform 180ms ease;
 }
 
 nav a:hover{
   color: var(--brand-2);
-  letter-spacing: 0.04em;
-  font-size: 0.98rem;
-  padding: 8px 16px;
+}
+
+nav a:hover span{
+  transform: scale(1.04);
 }
 
 /* Remove strong highlighted tab for current page; use subtle text color instead */
