@@ -198,6 +198,9 @@
     const notes = d.data?.notes || "";
     const photo = d.data?.photo || "";
     const kids = nodeKids(d);
+    const photoMarkup = photo
+      ? `<div class="detail-photo"><img src="${photo}" alt="${displayLabel(d)}" loading="lazy" decoding="async" /></div>`
+      : "";
 
     // Spouse node
     if (isSpouseNodeName(name)) {
@@ -207,13 +210,9 @@
       const spouseChildren = kids.map(c => c.data?.name).filter(Boolean);
 
       panel.innerHTML = `
+        ${photoMarkup}
+
         <h3 class="subtopic-title">${spouseName}</h3>
-        <div class="meta">
-          <span class="pill">${role}</span>
-          <span class="pill">Partner: ${partner}</span>
-          <span class="pill">Branch: ${branch.replace("Sri ","")}</span>
-          ${photo ? `<span class="pill">Photo</span>` : ``}
-        </div>
 
         ${
           spouseChildren.length
@@ -243,12 +242,9 @@
     }
 
     panel.innerHTML = `
+      ${photoMarkup}
+
       <h3 class="subtopic-title">${name}</h3>
-      <div class="meta">
-        <span class="pill">Branch: ${branch.replace("Sri ","")}</span>
-        ${photo ? `<span class="pill">Photo</span>` : ``}
-        ${spouses.length ? `<span class="pill">Spouse</span>` : ``}
-      </div>
 
       ${
         spouses.length
@@ -631,88 +627,21 @@
   update(root);
 
   // -----------------------------
-  // Search
+  // UI wiring (expects these IDs/classes in family-tree.html)
+  // depth-btn, expandBtn, tree, details
   // -----------------------------
-  function findMatches(query) {
-    const q = (query || "").trim().toLowerCase();
-    if (!q) return [];
-    return root.descendants().filter(d => isMatch(d, q));
-  }
-
-  function centerOnNode(d) {
-    const w = width();
-    const h = height();
-    const scale = 1.0;
-
-    // Vertical layout: x is horizontal, y is vertical
-    const transform = d3.zoomIdentity
-      .translate(w / 2 - d.x * scale, h / 2 - d.y * scale)
-      .scale(scale);
-
-    svg.transition().duration(350).call(zoomBehavior.transform, transform);
-  }
-
-  function runSearch() {
-    currentQuery = ($("searchInput")?.value || "").trim().toLowerCase();
-    if (!currentQuery) {
+  const depthButtons = document.querySelectorAll(".depth-btn");
+  depthButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const depth = parseInt(btn.getAttribute("data-depth") || "2", 10);
+      collapseToDepth(root, depth);
       update(root);
-      return;
-    }
-
-    const matches = findMatches(currentQuery);
-    if (!matches.length) {
-      setDetails(null);
-      update(root);
-      return;
-    }
-
-    const first = matches[0];
-    expandToNode(first);
-
-    selectedId = first.id;
-    setDetails(first);
-
-    update(first);
-    centerOnNode(first);
-  }
-
-  // -----------------------------
-  // UI wiring (expects these IDs in family-tree.html)
-  // searchInput, searchBtn, clearBtn, depthSelect, collapseBtn, expandBtn
-  // tree, details
-  // -----------------------------
-  $("searchBtn")?.addEventListener("click", (e) => { e.preventDefault(); runSearch(); });
-  $("searchInput")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); runSearch(); }
-  });
-
-  $("clearBtn")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    if ($("searchInput")) $("searchInput").value = "";
-    currentQuery = "";
-    selectedId = null;
-    setDetails(null);
-    const depth = parseInt($("depthSelect")?.value || "2", 10);
-    collapseToDepth(root, depth);
-    update(root);
-  });
-
-  $("collapseBtn")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const depth = parseInt($("depthSelect")?.value || "2", 10);
-    collapseToDepth(root, depth);
-    update(root);
+    });
   });
 
   $("expandBtn")?.addEventListener("click", (e) => {
     e.preventDefault();
     expandAll(root);
-    update(root);
-  });
-
-  $("depthSelect")?.addEventListener("change", () => {
-    const depth = parseInt($("depthSelect")?.value || "2", 10);
-    collapseToDepth(root, depth);
     update(root);
   });
 

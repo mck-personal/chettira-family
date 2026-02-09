@@ -68,7 +68,7 @@
     }
 
     /* Details panel */
-    #details h3{ margin: 0 0 8px; }
+    #details h3{ margin: 0 0 8px; text-align: center; }
     #details .meta{
       color: var(--muted);
       font-size: 0.95rem;
@@ -85,6 +85,24 @@
       border: 2px solid #1a5f4a;
       margin-right: 8px;
       margin-top: 6px;
+    }
+    #details .detail-photo{
+      margin: 12px 0 8px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      overflow: hidden;
+      background: var(--surface-alt);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      width: 220px;
+      height: 220px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #details .detail-photo img{
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     #details ul{ margin: 8px 0 0; padding-left: 18px; }
     #details li{ margin: 6px 0; }
@@ -148,29 +166,18 @@
         </p>
 
         <div class="toolbar">
-          <input id="searchInput" type="text" placeholder="Search a name (e.g., Mandanna / Mayamma)..." />
-          <a href="#" class="btn secondary small" id="searchBtn">Search</a>
-          <a href="#" class="btn secondary small" id="clearBtn">Clear</a>
-
-          <span style="flex:1"></span>
-
           <label class="kicker" style="margin:0;">Collapse depth:</label>
-          <select id="depthSelect">
-            <option value="2">2 (Recommended)</option>
-            <option value="1">1 (Only top branches)</option>
-            <option value="3">3 (More detail)</option>
-            <option value="999">Expanded</option>
-          </select>
-
-          <a href="#" class="btn secondary small" id="collapseBtn">Apply</a>
-          <a href="#" class="btn secondary small" id="expandBtn">Expand All</a>
+          <button class="btn secondary small depth-btn" type="button" data-depth="1">Level 1</button>
+          <button class="btn secondary small depth-btn" type="button" data-depth="2">Level 2</button>
+          <button class="btn secondary small depth-btn" type="button" data-depth="3">Level 3</button>
+          <button class="btn secondary small" type="button" id="expandBtn">Expand All</button>
         </div>
 
         <div class="tree-layout">
           <div>
             <div id="tree"></div>
             <div class="tree-help">
-              Tips: Zoom with Ctrl+scroll (or pinch) • Drag to pan • Search will jump to the first match
+              Tips: Zoom with Ctrl+scroll (or pinch) • Drag to pan
             </div>
           </div>
 
