@@ -44,7 +44,9 @@
 
   // Label positioning (below avatar)
   const LABEL_GAP = 26;   // distance below circle for name
-  const ROLE_GAP = 46;    // distance below circle for Wife/Husband
+  const ROLE_GAP = 18;    // spacing below name label for Wife/Husband
+  const WRAP_CHARS_MAIN = 16;
+  const WRAP_CHARS_TOP = 18;
 
   // -----------------------------
   // Helpers
@@ -82,6 +84,67 @@
   function displayLabel(d) {
     const n = d.data?.name || "";
     return isSpouseNodeName(n) ? spousePersonName(n) : n;
+  }
+
+  function labelLineHeight(d) {
+    return (d.depth <= 1 ? NAME_FONT_TOP : NAME_FONT_MAIN) + 2;
+  }
+
+  function wrapLabelText(text, maxChars) {
+    const words = (text || "").split(/\s+/).filter(Boolean);
+    const lines = [];
+    let current = "";
+
+    words.forEach(word => {
+      const next = current ? `${current} ${word}` : word;
+      if (next.length <= maxChars) {
+        current = next;
+        return;
+      }
+
+      if (current) lines.push(current);
+
+      if (word.length <= maxChars) {
+        current = word;
+        return;
+      }
+
+      let chunk = "";
+      for (const ch of word) {
+        if ((chunk + ch).length > maxChars) {
+          lines.push(chunk);
+          chunk = ch;
+        } else {
+          chunk += ch;
+        }
+      }
+      current = chunk;
+    });
+
+    if (current) lines.push(current);
+    return lines.length ? lines : [text];
+  }
+
+  function labelLines(d) {
+    const maxChars = d.depth <= 1 ? WRAP_CHARS_TOP : WRAP_CHARS_MAIN;
+    return wrapLabelText(displayLabel(d), maxChars);
+  }
+
+  function roleLabelY(d, r) {
+    const lines = labelLines(d).length;
+    return r + LABEL_GAP + (lines - 1) * labelLineHeight(d) + ROLE_GAP;
+  }
+
+  function renderLabel(sel, d) {
+    const lines = labelLines(d);
+    const lineHeight = labelLineHeight(d);
+    sel.text(null);
+    lines.forEach((line, i) => {
+      sel.append("tspan")
+        .attr("x", 0)
+        .attr("dy", i === 0 ? "0em" : `${lineHeight}px`)
+        .text(line);
+    });
   }
 
   function initialsFor(name) {
@@ -354,7 +417,7 @@
 
     // Update label positions below circle
     groupSel.select("text.node-label").attr("y", r + LABEL_GAP);
-    groupSel.select("text.role-label").attr("y", r + ROLE_GAP);
+    groupSel.select("text.role-label").attr("y", roleLabelY(d, r));
   }
 
   function selectNode(d) {
@@ -518,7 +581,7 @@
       .style("cursor", "pointer")
       .style("font-size", d => (d.depth <= 1 ? `${NAME_FONT_TOP}px` : `${NAME_FONT_MAIN}px`))
       .style("font-weight", d => (d.depth <= 1 ? 800 : 650))
-      .text(d => displayLabel(d))
+      .each(function (d) { renderLabel(d3.select(this), d); })
       .on("click", (event, d) => {
         event.stopPropagation();
         selectNode(d);
@@ -530,7 +593,7 @@
       .append("text")
       .attr("class", "role-label")
       .attr("x", 0)
-      .attr("y", d => radiusFor(d) + ROLE_GAP)
+      .attr("y", d => roleLabelY(d, radiusFor(d)))
       .attr("text-anchor", "middle")
       .attr("fill", "#64748b")
       .style("font-weight", 800)
@@ -540,6 +603,13 @@
     nodeEnter.append("title").text(d => d.data?.name || "");
 
     const nodeMerge = nodeEnter.merge(node);
+
+    nodeMerge.select("text.node-label").each(function (d) {
+      renderLabel(d3.select(this), d);
+    });
+
+    nodeMerge.select("text.role-label")
+      .attr("y", d => roleLabelY(d, radiusFor(d)));
 
     nodeMerge
       .classed("selected", d => d.id === selectedId)
