@@ -19,12 +19,12 @@
               "notes": "Child of Sri Chinnappa.",
               "children": [
                 {
-                  "name": "Kuttappa",
+                  "name": "Saabu / Kuttappa",
                   "photo": "assets/images/people/c.kuttappa.jpg",
                   "notes": "Child of Sri Devaiah."
                 },
                 {
-                  "name": "Ganapathy",
+                  "name": "Pookunyi / Ganapathy",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Devaiah. Spouse: Chembavva.",
                   "children": [
@@ -34,12 +34,12 @@
                       "notes": "Wife of Ganapathy.",
                       "children": [
                         {
-                          "name": "Subramani",
+                          "name": "Kiran / Subramani",
                           "photo": "assets/images/people/default.png",
                           "notes": "Child of Ganapathy and Chembavva."
                         },
                         {
-                          "name": "Belliappa",
+                          "name": "Belli / Belliappa",
                           "photo": "assets/images/people/c.belliappa.png",
                           "notes": "Child of Ganapathy and Chembavva."
                         },
@@ -53,7 +53,7 @@
                   ]
                 },
                 {
-                  "name": "Uthappa",
+                  "name": "Chaama / Uthappa",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Devaiah. Spouse: Poovavva.",
                   "children": [
@@ -63,7 +63,7 @@
                       "notes": "Wife of Uthappa.",
                       "children": [
                         {
-                          "name": "Chermanna",
+                          "name": "Changumani /Chermanna",
                           "photo": "assets/images/people/default.png",
                           "notes": "Child of Uthappa and Poovavva."
                         },
@@ -111,22 +111,22 @@
                   "notes": "Wife of Sri Joyappa.",
                   "children": [
                     {
-                      "name": "Nanjappa",
+                      "name": "Appu / Nanjappa",
                       "photo": "assets/images/people/default.png",
                       "notes": "Child of Sri Joyappa and Chinnamma.",
                       "children": [
                         {
-                          "name": "Rani",
+                          "name": "Wife: Rani",
                           "photo": "assets/images/people/default.png",
                           "notes": "Child of Nanjappa.",
                           "children": [
                             {
-                              "name": "Dechamma",
+                              "name": "Shilpa / Dechamma",
                               "photo": "assets/images/people/default.png",
                               "notes": "Child of Rani."
                             },
                             {
-                              "name": "Poonacha",
+                              "name": "Punith / Poonacha",
                               "photo": "assets/images/people/default.png",
                               "notes": "Child of Rani."
                             }
@@ -135,7 +135,7 @@
                       ]
                     },
                     {
-                      "name": "Sadashiva",
+                      "name": "Sada / Sadashiva",
                       "photo": "assets/images/people/default.png",
                       "notes": "Child of Sri Joyappa and Chinnamma. Spouse: Sumithra.",
                       "children": [
@@ -174,7 +174,7 @@
                       "notes": "Child of Sri Joyappa and Chinnamma."
                     },
                     {
-                      "name": "Gowramma",
+                      "name": "Gowri / Gowramma",
                       "photo": "assets/images/people/default.png",
                       "notes": "Child of Sri Joyappa and Chinnamma."
                     }
@@ -195,61 +195,61 @@
         {
           "name": "Sri Naniappa",
           "photo": "assets/images/people/default.png",
-          "notes": "Child of Sri Subbaiah. Spouse: Ponnavva.",
+          "notes": "Child of Sri Subbaiah. Spouse: Cheyyavva / Ponnavva.",
           "children": [
             {
-              "name": "Wife: Ponnavva",
+              "name": "Wife: Cheyyavva / Ponnavva",
               "photo": "assets/images/people/default.png",
               "notes": "Wife of Sri Naniappa.",
               "children": [
                 {
-                  "name": "Kariappa",
+                  "name": "Raja / Kariappa",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Sri Naniappa and Ponnavva. Spouse: Meera.",
+                  "notes": "Child of Sri Naniappa and Cheyyavva / Ponnavva. Spouse: Meera.",
                   "children": [
                     {
                       "name": "Wife: Meera",
                       "photo": "assets/images/people/default.png",
-                      "notes": "Wife of Kariappa.",
+                      "notes": "Wife of Raja / Kariappa.",
                       "children": [
                         {
                           "name": "Ponnanna",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Kariappa and Meera."
+                          "notes": "Child of Raja / Kariappa and Meera."
                         },
                         {
-                          "name": "Dechamma",
+                          "name": "Deena / Dechamma",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Kariappa and Meera."
+                          "notes": "Child of Raja / Kariappa and Meera."
                         },
                         {
-                          "name": "Muthamma",
+                          "name": "Disha / Muthamma",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Kariappa and Meera."
+                          "notes": "Child of Raja / Kariappa and Meera."
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "name": "Madappa",
+                  "name": "Manu / Madappa",
                   "photo": "assets/images/people/n.madappa.png",
-                  "notes": "Child of Sri Naniappa and Ponnavva.",
+                  "notes": "Child of Sri Naniappa and Cheyyavva / Ponnavva.",
                   "children": [
                     {
-                      "name": "Devaki",
+                      "name": "Wife: Kanthi / Devaki",
                       "photo": "assets/images/people/default.png",
-                      "notes": "Child of Madappa.",
+                      "notes": "Wife of Manu / Madappa.",
                       "children": [
                         {
                           "name": "Poovamma",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Devaki."
+                          "notes": "Child of Manu and Kanthi."
                         },
                         {
                           "name": "Dhyan Chengappa",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Devaki."
+                          "notes": "Child of Manu and Kanthi."
                         }
                       ]
                     }
@@ -258,7 +258,7 @@
                 {
                   "name": "Sharada",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Sri Naniappa and Ponnavva."
+                  "notes": "Child of Sri Naniappa and Cheyyavva / Ponnavva."
                 }
               ]
             }
@@ -283,131 +283,131 @@
               "notes": "Wife of Sri Appaji.",
               "children": [
                 {
-                  "name": "Ganapathy (unmarried, deceased)",
+                  "name": "Gappu / Ganapathy",
                   "photo": "assets/images/people/a.ganapathy.jpg",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "Kushalappa",
+                  "name": "Mittu / Kushalappa",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Sri Appaji and Mayamma. Spouse: Kavery / K A Kaveramma.",
+                  "notes": "Child of Sri Appaji and Mayamma. Spouse: Kavery / Kaveramma.",
                   "children": [
                     {
-                      "name": "Wife: Kavery / K A Kaveramma",
+                      "name": "Wife: Kavery / Kaveramma",
                       "photo": "assets/images/people/default.png",
-                      "notes": "Wife of Kushalappa.",
+                      "notes": "Wife of Mittu / Kushalappa.",
                       "children": [
                         {
-                          "name": "Shari / Mandanna C K",
+                          "name": "Shari / Mandanna",
                           "photo": "assets/images/people/a.mandanna.png",
-                          "notes": "Child of Kushalappa and Kavery. Married to Vamshi.",
+                          "notes": "Child of Mittu and Kavery. Married to Vamshi.",
                           "children": [
                             {
-                              "name": "Wife: Vamshi / Kaveramma B G",
+                              "name": "Wife: Vamshi / Kaveramma",
                               "photo": "assets/images/people/default.png",
-                              "notes": "Wife of Shari / Mandanna C K."
+                              "notes": "Wife of Shari / Mandanna."
                             }
                           ]
                         },
                         {
-                          "name": "Bharath / Bopanna C K",
+                          "name": "Bharath / Bopanna",
                           "photo": "assets/images/people/a.bopanna.jpg",
-                          "notes": "Child of Kushalappa and Kavery."
+                          "notes": "Child of Mittu and Kavery."
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "name": "Kariappa",
+                  "name": "Raja / Kariappa",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma.",
                   "children": [
                     {
-                      "name": "Gayathri",
+                      "name": "Wife: Latha / Gayathri",
                       "photo": "assets/images/people/default.png",
-                      "notes": "Child of Kariappa.",
+                      "notes": "Wife of Raja.",
                       "children": [
                         {
                           "name": "Harshitha",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Gayathri."
+                          "notes": "Child of Raja and Latha."
                         },
                         {
                           "name": "Grantha",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Gayathri."
+                          "notes": "Child of Raja and Latha."
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "name": "Somaiah",
+                  "name": "Mani / Somaiah",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma.",
                   "children": [
                     {
-                      "name": "Shyla",
+                      "name": "Wife: Shyla",
                       "photo": "assets/images/people/default.png",
-                      "notes": "Child of Somaiah.",
+                      "notes": "Wife of Mani.",
                       "children": [
                         {
-                          "name": "Leelavathy",
+                          "name": "Sajnya / Leelavathy",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Shyla."
+                          "notes": "Child of Mani and Shyla."
                         },
                         {
                           "name": "Shruthi",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Shyla."
+                          "notes": "Child of Mani and Shyla."
                         },
                         {
-                          "name": "Chondamma",
+                          "name": "Sarika / Chondamma",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Shyla."
+                          "notes": "Child of Mani and Shyla."
                         },
                         {
-                          "name": "Thangamma",
+                          "name": "Sonika / Thangamma",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Shyla."
+                          "notes": "Child of Mani and Shyla."
                         },
                         {
-                          "name": "Bopaiah",
+                          "name": "Darshan / Bopaiah",
                           "photo": "assets/images/people/default.png",
-                          "notes": "Child of Shyla."
+                          "notes": "Child of Mani and Shyla."
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "name": "Gangamma",
+                  "name": "Gowru / Gangamma",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "Leelavathy",
+                  "name": "Avvi / Leelavathy",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "Parvathy",
+                  "name": "Poovi /Parvathy",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "Yeshodha",
+                  "name": "Mutthu / Yeshodha",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "A Gangamma",
+                  "name": "Gombe / A Gangamma",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 },
                 {
-                  "name": "Jayanthi",
+                  "name": "Kunyakka / Jayanthi",
                   "photo": "assets/images/people/default.png",
                   "notes": "Child of Sri Appaji and Mayamma."
                 }
@@ -427,38 +427,19 @@
               "notes": "Wife of Sri Devaiah.",
               "children": [
                 {
-                  "name": "Billi / Sujatha (unmarried, deceased)",
+                  "name": "Billi / Sujatha",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Bhagyavathy. Spouse: Kuttappa TA.",
-                  "children": [
-                    {
-                      "name": "Husband: Kuttappa TA",
-                      "photo": "assets/images/people/default.png",
-                      "notes": "Husband of Sujatha.",
-                      "children": [
-                        {
-                          "name": "Poovamma TK",
-                          "photo": "assets/images/people/default.png",
-                          "notes": "Child of Sujatha and Kuttappa TA."
-                        },
-                        {
-                          "name": "Ganapathy TK",
-                          "photo": "assets/images/people/default.png",
-                          "notes": "Child of Sujatha and Kuttappa TA."
-                        }
-                      ]
-                    }
-                  ]
+                  "notes": "Child of Sri Devaiah and Bhagyavathy. Spouse: Kuttappa TA."
                 },
                 {
-                  "name": "Paapu / Kalaiah (unmarried, deceased)",
+                  "name": "Paapu / Kalaiah",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Sri Devaiah."
+                  "notes": "Child of Sri Devaiah and Bhagyavathy."
                 },
                 {
-                  "name": "Bindhu (unmarried, deceased)",
+                  "name": "Bindhu",
                   "photo": "assets/images/people/default.png",
-                  "notes": "Child of Sri Devaiah."
+                  "notes": "Child of Sri Devaiah and Bhagyavathy."
                 }
               ]
             }
