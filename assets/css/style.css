@@ -173,6 +173,9 @@ nav{
 }
 
 nav a{
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   color: var(--ink);
   text-decoration:none;
   padding: 8px 12px;
@@ -180,15 +183,15 @@ nav a{
   font-size: 0.85rem;
   font-weight: 400;
   position: relative;
-  transition: color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  transition: color 180ms ease, letter-spacing 180ms ease, font-size 180ms ease, padding 180ms ease;
   border: 1px solid transparent;
 }
 
 nav a:hover{
   color: var(--brand-2);
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
+  letter-spacing: 0.04em;
+  font-size: 0.98rem;
+  padding: 8px 16px;
 }
 
 /* Remove strong highlighted tab for current page; use subtle text color instead */
@@ -1039,6 +1042,14 @@ body[data-theme="light"] .hero--luxury::before{
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+}
+
+.home .hero-actions .btn{
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+.home .hero-actions .btn:hover{
+  transform: translateY(-5px) scale(1.04);
 }
 
 /* Buttons – refined, not flashy */
