@@ -301,7 +301,7 @@
 
   // Zoom/Pan
   const zoomBehavior = d3.zoom()
-    .scaleExtent([0.35, 2.8])
+    .scaleExtent([0.35, 30])
     .on("zoom", (event) => g.attr("transform", event.transform));
   svg.call(zoomBehavior);
 
