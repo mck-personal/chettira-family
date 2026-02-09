@@ -777,6 +777,42 @@ body[data-theme="light"] .card:hover{
   box-shadow: 0 0 18px rgba(201, 169, 97, 0.2);
 }
 
+.album-tabs{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.album-tab{
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--ink);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, filter 140ms ease;
+}
+
+.album-tab:hover{
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--brand-2);
+  box-shadow: 0 28px 52px rgba(0, 0, 0, 0.32);
+  filter: brightness(1.05);
+}
+
+.album-tab.is-active{
+  background: var(--brand-2);
+  color: #1a1a1a;
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(201, 169, 97, 0.35);
+}
+
 .gallery-empty{
   margin-top: 12px;
   color: var(--muted);
