@@ -32,19 +32,19 @@
   const HOVER_MS = 120;
 
   // Font sizes
-  const NAME_FONT_MAIN = 15;
+  const NAME_FONT_MAIN = 14;
   const NAME_FONT_TOP = 16;
   const ROLE_FONT = 12;
 
   // Vertical tree spacing:
   // X = horizontal spacing between siblings
   // Y = vertical spacing between generations
-  const GAP_X = 140;
-  const GAP_Y = 190;
+  const GAP_X = 170;
+  const GAP_Y = 220;
 
   // Label positioning (below avatar)
-  const LABEL_GAP = 20;   // distance below circle for name
-  const ROLE_GAP = 38;    // distance below circle for Wife/Husband
+  const LABEL_GAP = 26;   // distance below circle for name
+  const ROLE_GAP = 46;    // distance below circle for Wife/Husband
 
   // -----------------------------
   // Helpers
