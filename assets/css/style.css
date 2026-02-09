@@ -197,7 +197,7 @@ nav a:hover{
 }
 
 nav a:hover span{
-  transform: scale(1.04);
+  transform: translateY(-3px);
 }
 
 /* Remove strong highlighted tab for current page; use subtle text color instead */
