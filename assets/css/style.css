@@ -15,6 +15,7 @@
   --brand: #1a5f4a;       /* deep emerald teal */
   --brand-2: #c9a961;     /* warm gold accent */
   --brand-3: #e5d4bc;     /* cream highlight */
+  --nav-highlight: #d6b25e; /* gold highlight for nav */
 
   --radius: 12px;
   --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
@@ -30,6 +31,7 @@ body[data-theme="light"]{
   --muted: #5a5a5a;
   --border: #e6e6e6;
   --shadow: 0 18px 38px rgba(17, 17, 17, 0.08);
+  --nav-highlight: #b8842a;
 }
 
 *{ box-sizing:border-box; }
@@ -193,7 +195,7 @@ nav a span{
 }
 
 nav a:hover{
-  color: var(--brand-2);
+  color: var(--nav-highlight);
 }
 
 nav a:hover span{
@@ -202,7 +204,7 @@ nav a:hover span{
 
 /* Remove strong highlighted tab for current page; use subtle text color instead */
 nav a[aria-current="page"]{
-  color: var(--ink);
+  color: var(--nav-highlight);
   font-weight: 600;
   background: transparent;
   border: 1px solid transparent;
