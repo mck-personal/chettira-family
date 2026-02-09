@@ -573,7 +573,7 @@
       .attr("x", 0)
       .attr("y", d => radiusFor(d) + LABEL_GAP)
       .attr("text-anchor", "middle")
-      .attr("fill", d => isSpouseNodeName(d.data?.name || "") ? "#e5dcd4" : "#2a2520")
+      .attr("fill", "#2a2520")
       .style("cursor", "pointer")
       .style("font-size", d => (d.depth <= 1 ? `${NAME_FONT_TOP}px` : `${NAME_FONT_MAIN}px`))
       .style("font-weight", d => (d.depth <= 1 ? 800 : 650))
