@@ -708,6 +708,7 @@ body[data-theme="light"] .card:hover{
 .list{
   margin:0;
   padding-left: 18px;
+  list-style: disc;
 }
 
 .contact-details{
@@ -716,6 +717,7 @@ body[data-theme="light"] .card:hover{
 
 .list li{
   margin: 7px 0;
+  font-size: 0.875rem;
 }
 
 
